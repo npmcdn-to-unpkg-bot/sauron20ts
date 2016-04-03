@@ -7,4 +7,5 @@
 /// <reference path="main/ambient/node/index.d.ts" />
 /// <reference path="main/ambient/nunjucks/index.d.ts" />
 /// <reference path="main/ambient/serve-static/index.d.ts" />
+/// <reference path="main/ambient/underscore/index.d.ts" />
 /// <reference path="main/ambient/winston/index.d.ts" />

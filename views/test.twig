@@ -1,0 +1,32 @@
+{% extends "layout.twig" %}
+
+{% set mainMenuOption = "sprint" %}
+
+{% block body %}
+
+    <div class="container-fluid main-content">
+
+        <div class="row">
+
+            <div class="col-md-3 hidden-print">
+                <!--
+                {%  include "sprint/sprint-menu.nj" %}
+                -->
+                <h1>Incluir Menú</h1>
+            </div>
+
+            <div class="col-md-9">
+
+                <h1>Incluir el BODY!</h1>
+                {% block sprintbody %}
+
+                {% endblock %}
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -7,4 +7,5 @@
 /// <reference path="browser/ambient/node/index.d.ts" />
 /// <reference path="browser/ambient/nunjucks/index.d.ts" />
 /// <reference path="browser/ambient/serve-static/index.d.ts" />
+/// <reference path="browser/ambient/underscore/index.d.ts" />
 /// <reference path="browser/ambient/winston/index.d.ts" />

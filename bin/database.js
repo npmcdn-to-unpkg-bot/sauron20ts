@@ -31,4 +31,4 @@ class Database {
         this.connectionPool.end();
     }
 }
-exports.Database = Database;
+exports.database = new Database();

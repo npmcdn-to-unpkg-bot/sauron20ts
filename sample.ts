@@ -5,7 +5,7 @@ import {readdir} from "fs";
 const Promise = require("bluebird");
 import {logger} from "./logger";
 import {DatabaseProfile} from "./database";
-import {Database} from "./database";
+import {database} from "./database";
 import {IQuery} from "mysql";
 
 var readdirAsync = Promise.promisify(readdir);
@@ -25,15 +25,13 @@ async function main() {
         database: 'sauron'
     };
 
-    var db:Database = new Database();
+    database.connect(CASA_DB);
 
-    db.connect(CASA_DB);
-
-    var r = await db.queryForOne("Select * from sprint where id = ?", [88]);
+    var r = await database.queryForOne("Select * from sprint where id = ?", [88]);
 
     console.log(r);
 
-    db.shutdown();
+    database.shutdown();
 }
 
 main();

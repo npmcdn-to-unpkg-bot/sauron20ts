@@ -1,8 +1,8 @@
 {
   "name": "sauron20ts",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Sauron 2.0 Typescript + Node",
+  "main": "bin/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,6 +15,7 @@
     "morgan": "^1.7.0",
     "mysql": "^2.10.2",
     "nunjucks": "^2.4.1",
+    "underscore": "^1.8.3",
     "winston": "^2.2.0"
   }
 }

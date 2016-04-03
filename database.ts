@@ -12,7 +12,7 @@ export interface DatabaseProfile {
     database: string
 }
 
-export class Database {
+class Database {
 
     connectionPool:IPool;
     profile: DatabaseProfile;
@@ -32,9 +32,9 @@ export class Database {
         }
     }
 
-    query(strSql:string,params?:Array<any>): Promise<IQuery> {
+    query(strSql:string,params?:Array<any>): Promise<Array<any>> {
         logger.info(strSql + "; Params: [" + params + "]");
-        return new Promise<IQuery>((resolve,reject) => {
+        return new Promise<Array<any>>((resolve,reject) => {
             this.connectionPool.query(strSql,params,(err,result)=> {
                 if(err) return reject(err);
                 return resolve(result);
@@ -42,7 +42,7 @@ export class Database {
         });
     }
 
-    queryForOne(strSql:string,params?:Array<any>): Promise<IQuery> {
+    queryForOne(strSql:string,params?:Array<any>): Promise<any> {
         return this.query(strSql,params).then(result => result[0]);
     }
 
@@ -53,5 +53,6 @@ export class Database {
 
     }
 
-
 }
+
+export const database = new Database();

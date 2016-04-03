@@ -23,11 +23,10 @@ function main() {
             password: 'root',
             database: 'sauron'
         };
-        var db = new database_1.Database();
-        db.connect(CASA_DB);
-        var r = yield db.queryForOne("Select * from sprint where id = ?", [88]);
+        database_1.database.connect(CASA_DB);
+        var r = yield database_1.database.queryForOne("Select * from sprint where id = ?", [88]);
         console.log(r);
-        db.shutdown();
+        database_1.database.shutdown();
     });
 }
 main();

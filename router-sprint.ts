@@ -1,0 +1,20 @@
+///<reference path='./typings/main.d.ts' />
+
+import {logger} from "./logger";
+import {repository} from "./repository";
+import {Router} from "express"
+
+export const router = Router();
+
+router.use('/result/:projectKey/:sprintId/resumen-general', async (req, res, next) => {
+
+    try {
+        var issues = await repository.findSnapShotIssuesFromSprint(req.params.sprintId);
+
+        res.send(issues);
+    }
+    catch(e) {
+        next(e);
+    }
+
+});
