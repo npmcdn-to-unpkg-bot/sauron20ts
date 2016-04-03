@@ -2,11 +2,11 @@
 
 import * as express from "express";
 import * as path from "path";
-import {logger,stream as loggerStream} from "./logger";
+import {logger,stream as loggerStream} from "./util-logger";
 import * as Promise from "bluebird";
 import * as morgan from "morgan";
 import * as templates from "nunjucks";
-import {database} from "./database";
+import {database} from "./util-database";
 import {router as sprintRouter} from "./router-sprint";
 const moment = require("moment");
 
@@ -76,6 +76,6 @@ app.use("/test",(req, res, next) => {
  * Servidor
  **********************************************************************************************************************/
 app.listen(process.env.NODE_PORT || 3000, () => {
-    logger.info(`Sauron 2.0 server arrancado en el puerto ${app.get('port')} en modo: ${!process.env.NODE_ENV?'development':process.env.NODE_ENV}`);
+    logger.info(`Sauron 2.0 server arrancado en el puerto ${process.env.NODE_PORT || 3000} en modo: ${!process.env.NODE_ENV?'DEVELOPMENT':process.env.NODE_ENV.toUpperCase()}`);
 });
 

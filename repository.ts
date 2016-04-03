@@ -1,7 +1,7 @@
 ///<reference path='./typings/main.d.ts' />
 
-import {logger} from "./logger";
-import {database} from "./database";
+import {logger} from "./util-logger";
+import {database} from "./util-database";
 import * as assert from "assert";
 import * as _ from "underscore";
 import {IQuery} from "mysql";

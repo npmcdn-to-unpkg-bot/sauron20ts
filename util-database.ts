@@ -1,6 +1,6 @@
 ///<reference path='./typings/main.d.ts' />
 
-import {logger} from "./logger";
+import {logger} from "./util-logger";
 
 import {createPool, IPool} from "mysql";
 import {IQuery} from "mysql";

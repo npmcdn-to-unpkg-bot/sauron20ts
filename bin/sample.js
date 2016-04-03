@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const fs_1 = require("fs");
 const Promise = require("bluebird");
-const database_1 = require("./database");
+const util_database_1 = require("./util-database");
 var readdirAsync = Promise.promisify(fs_1.readdir);
 var para = Promise.promisify(setTimeout);
 function delay(ms) {
@@ -23,10 +23,10 @@ function main() {
             password: 'root',
             database: 'sauron'
         };
-        database_1.database.connect(CASA_DB);
-        var r = yield database_1.database.queryForOne("Select * from sprint where id = ?", [88]);
+        util_database_1.database.connect(CASA_DB);
+        var r = yield util_database_1.database.queryForOne("Select * from sprint where id = ?", [88]);
         console.log(r);
-        database_1.database.shutdown();
+        util_database_1.database.shutdown();
     });
 }
 main();

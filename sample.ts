@@ -3,9 +3,9 @@
 import ErrnoException = NodeJS.ErrnoException;
 import {readdir} from "fs";
 const Promise = require("bluebird");
-import {logger} from "./logger";
-import {DatabaseProfile} from "./database";
-import {database} from "./database";
+import {logger} from "./util-logger";
+import {DatabaseProfile} from "./util-database";
+import {database} from "./util-database";
 import {IQuery} from "mysql";
 
 var readdirAsync = Promise.promisify(readdir);

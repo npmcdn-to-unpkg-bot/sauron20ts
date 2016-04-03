@@ -1,6 +1,6 @@
 ///<reference path='./typings/main.d.ts' />
 
-import {logger} from "./logger";
+import {logger} from "./util-logger";
 import {repository} from "./repository";
 import {Router} from "express"
 
