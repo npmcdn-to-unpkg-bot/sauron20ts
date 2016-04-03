@@ -1,0 +1,51 @@
+<div id="menu-principal" class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar">
+                    </span> <span class="icon-bar">
+                </span>
+            </button>
+            <a class="navbar-brand" href="/"><span>Sauron</span></a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+
+                <li class="{% if mainMenuOption == 'seguimiento' %}active{% endif %}">
+                    <a href="/seguimiento/search">
+                        <span><i class="glyphicon glyphicon-eye-open"> </i> Seguimiento</span>
+                    </a>
+                </li>
+
+                <li class="{% if mainMenuOption == 'sprint' %}active{% endif %}">
+                    <a href="/sprint/search">
+                        <span><i class="glyphicon glyphicon-calendar"> </i> Sprint</span>
+                    </a>
+                </li>
+
+                <li class="{% if mainMenuOption == 'backlog' %}active{% endif %}">
+                    <a href="/backlog/search">
+                        <span><i class="glyphicon glyphicon-list-alt"> </i> Backlog</span>
+                    </a>
+                </li>
+
+                <li class="{% if mainMenuOption == 'historico' %}active{% endif %}">
+                    <a href="/historico/search">
+                        <span><i class="glyphicon glyphicon-folder-close"> </i> Histórico</span>
+                    </a>
+                </li>
+
+                <li class="{% if mainMenuOption == 'tarea' %}active{% endif %}">
+                    <a href="/tarea/search">
+                        <span><i class="glyphicon glyphicon-bishop"> </i> Ficha de tarea</span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</div>

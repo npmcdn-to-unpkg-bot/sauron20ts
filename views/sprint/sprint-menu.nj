@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-pills nav-stacked bg-info">
+
+            <li role="presentation" class="{% if sprintMenuOption == 'infg' %}active{% endif %}">
+                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/resumen/general">Información general</a>
+            </li>
+
+            <li role="presentation" class="{% if sprintMenuOption == 'rsit' %}active{% endif %}">
+                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/resumen/situacion">Resumen por situación</a>
+            </li>
+
+            <li role="presentation" class="{% if sprintMenuOption == 'rtipo' %}active{% endif %}">
+                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/resumen/tipo">Resumen por tipo</a>
+            </li>
+
+            <li role="presentation" class="{% if sprintMenuOption == 'rsit' %}active{% endif %}">
+                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/resumen/po">Resumen de tareas por product owner</a>
+            </li>
+
+            <li role="presentation" class="{% if sprintMenuOption == 'dpo' %}active{% endif %}">
+                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/detalle/po">Detalle por product owner</a>
+            </li>
+
+            <li role="presentation" class="{% if sprintMenuOption == 'depica' %}active{% endif %}">
+                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/detalle/proyectos">Detalle por proyecto en seguimiento</a>
+            </li>
+
+            <li role="presentation" class="{% if sprintMenuOption == 'destado' %}active{% endif %}">
+                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/detalle/estado">Detalle por estado</a>
+            </li>
+
+
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3 style="margin: 0" class="text-primary">{{title}}</h3>
+        <hr class="hr-report"/>
+    </div>
+
+    <div class="col-md-12">
+        <div id="chartId"></div>
+    </div>
+
+    <div class="col-md-12">
+        <table  class="table-resumen table table-bordered">
+            <thead>
+            <tr>
+                <th>{{labelTipo}}</th>
+                <th>Tareas</th>
+                <th>Esfuerzo</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {{#each data as |value key|}}
+            <tr>
+                <td>{{key}}</td>
+                <td>{{value.count}}</td>
+                <td>{{value.sum}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+
+<script>
+
+    $(document).ready(function(){
+
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(function(){
+
+            $("body").removeClass("hidden");
+
+            var data = {{#JSONToStr data}}{{/JSONToStr}};
+
+            var chartcols = [
+                ['string','{{labelTipo}}'],
+                ['number','Total']
+            ];
+
+            var chartrows = _.map(data,function(value,key) { return [key,value.count] } );
+
+            var chartconfig = {
+                title : 'Distribución de las tareas por {{labelTipo}}'
+            };
+
+            chart("chartId","PieChart",chartcols,chartrows,chartconfig);
+
+        });
+    });
+
+
+</script>

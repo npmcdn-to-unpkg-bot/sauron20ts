@@ -1,0 +1,59 @@
+{% extends "sprint/sprint-base.nj" %}
+
+{% block sprintbody %}
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <h3 style="margin: 0" class="text-primary">
+                {% block title %}
+                    Título
+                {% endblock %}
+            </h3>
+            <hr class="hr-report"/>
+        </div>
+
+        {% for key,value in  data %}
+        <div class="col-md-12">
+            <table class="table table-bordered bg-primary">
+                <tbody>
+                <tr>
+                    <td style="color: white;">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <i class="glyphicon glyphicon-book"></i> {{key}}
+                            </div>
+                            <div class="col-md-2">
+                                <div class="pull-right">
+                                    <span>Total tareas: {{value.length}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    {% block tableheader %}
+                    {% endblock %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for row in value %}
+                <tr>
+                    {% block tablebody %}
+                    {% endblock %}
+                </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "sprint/sprint-report-detail-base.nj" %}
+
+{% import "macro/issue-macros.nj" as issuemacro %}
+
+{% set sprintMenuOption = "infg" %}
+{% set hiddenBody = false %}
+
+{% block title %}Detalle de tareas por Product Owner{% endblock %}
+
+{%  block tableheader %}
+    <th width="70%">Tarea</th>
+    <th width="10%">Tipo</th>
+    <th width="10%">Estado</th>
+    <th width="10%">Esfuerzo</th>
+{% endblock %}
+
+{%  block tablebody %}
+    <td>{{ issuemacro.issueSummary(row) }}</td>
+    <td>{{ row.issuetype_name }}</td>
+    <td>{{ issuemacro.issueStatus(row) }}</td>
+    <td>{{ row.puntos_historia }}</td>
+{% endblock %}
