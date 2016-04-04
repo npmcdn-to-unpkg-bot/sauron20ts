@@ -1,37 +1,49 @@
 ///<reference path='./typings/main.d.ts' />
+"use strict";
+//var config = require("./config");
 
-import ErrnoException = NodeJS.ErrnoException;
-import {readdir} from "fs";
-const Promise = require("bluebird");
-import {logger} from "./util-logger";
-import {DatabaseProfile} from "./util-database";
-import {database} from "./util-database";
-import {IQuery} from "mysql";
 
-var readdirAsync = Promise.promisify(readdir);
+/*
+console.log(config);
 
-var para = Promise.promisify(setTimeout);
+config.get('log').console = null;
 
-function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+console.log(config.get('log').console);
+    */
+
+var immutable = require("immutable");
+
+var kk = immutable.Seq.of({ edad: { a:[{x:10}] , b:2}});
+
+//deepFreeze(kk2);
+
+
+var oddSquares = immutable.Seq.of(1,2,3,4,5,6,7,8)
+    .filter(x => x % 2).map(x => x * x);
+console.log(oddSquares);
+
+console.log(kk);
+
+console.log(kk.get("edad"));
+
+kk.get("edad").a = "mierda";
+
+
+
+function deepFreeze(obj) {
+
+    // Retrieve the property names defined on obj
+    var propNames = Object.getOwnPropertyNames(obj);
+
+    // Freeze properties before freezing self
+    propNames.forEach(function(name) {
+        var prop = obj[name];
+
+        // Freeze prop if it is an object
+        if (typeof prop == 'object' && prop !== null)
+            deepFreeze(prop);
+    });
+
+    // Freeze self (no-op if already frozen)
+    return Object.freeze(obj);
 }
-
-async function main() {
-
-    let CASA_DB:DatabaseProfile = {
-        host: 'localhost',
-        user: 'root',
-        password: 'root',
-        database: 'sauron'
-    };
-
-    database.connect(CASA_DB);
-
-    var r = await database.queryForOne("Select * from sprint where id = ?", [88]);
-
-    console.log(r);
-
-    database.shutdown();
-}
-
-main();

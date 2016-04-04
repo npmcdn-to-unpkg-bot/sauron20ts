@@ -11,6 +11,7 @@
   "dependencies": {
     "bluebird": "^3.3.4",
     "express": "^4.13.4",
+    "immutable": "^3.7.6",
     "moment": "^2.12.0",
     "morgan": "^1.7.0",
     "mysql": "^2.10.2",

@@ -1,32 +1,18 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator.throw(value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments)).next());
+var immutable = require("immutable");
+var kk = immutable.Seq.of({ edad: { a: [{ x: 10 }], b: 2 } });
+var oddSquares = immutable.Seq.of(1, 2, 3, 4, 5, 6, 7, 8)
+    .filter(x => x % 2).map(x => x * x);
+console.log(oddSquares);
+console.log(kk);
+console.log(kk.get("edad"));
+kk.get("edad").a = "mierda";
+function deepFreeze(obj) {
+    var propNames = Object.getOwnPropertyNames(obj);
+    propNames.forEach(function (name) {
+        var prop = obj[name];
+        if (typeof prop == 'object' && prop !== null)
+            deepFreeze(prop);
     });
-};
-const fs_1 = require("fs");
-const Promise = require("bluebird");
-const util_database_1 = require("./util-database");
-var readdirAsync = Promise.promisify(fs_1.readdir);
-var para = Promise.promisify(setTimeout);
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return Object.freeze(obj);
 }
-function main() {
-    return __awaiter(this, void 0, void 0, function* () {
-        let CASA_DB = {
-            host: 'localhost',
-            user: 'root',
-            password: 'root',
-            database: 'sauron'
-        };
-        util_database_1.database.connect(CASA_DB);
-        var r = yield util_database_1.database.queryForOne("Select * from sprint where id = ?", [88]);
-        console.log(r);
-        util_database_1.database.shutdown();
-    });
-}
-main();

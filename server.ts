@@ -2,7 +2,7 @@
 
 import * as express from "express";
 import * as path from "path";
-import {logger,stream as loggerStream} from "./util-logger";
+import {logger,loggerStream} from "./util";
 import * as Promise from "bluebird";
 import * as morgan from "morgan";
 import * as templates from "nunjucks";
