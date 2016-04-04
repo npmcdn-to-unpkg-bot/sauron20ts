@@ -1,9 +1,10 @@
 ///<reference path='./typings/main.d.ts' />
+"use strict";
 
-const immutable = require("immutable");
+const Immutable = require("seamless-immutable");
 
 
-export var config = immutable.Map({
+export var config = Immutable({
 
     database: {
 
@@ -27,7 +28,8 @@ export var config = immutable.Map({
             handleExceptions: true,
             json: false,
             colorize: true
-        },
+        }
+        /*,
         file: {
             level: 'info',
             filename: './logs/all-logs.log',
@@ -36,9 +38,7 @@ export var config = immutable.Map({
             maxsize: 5242880, //5MB
             maxFiles: 5,
             colorize: true
-        }
+        }*/
     }
 
 });
-
-console.log(config);

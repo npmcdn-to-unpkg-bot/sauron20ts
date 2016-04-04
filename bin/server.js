@@ -2,9 +2,9 @@
 const express = require("express");
 const path = require("path");
 const util_1 = require("./util");
+const config_1 = require("./config");
 const morgan = require("morgan");
 const templates = require("nunjucks");
-const util_database_1 = require("./util-database");
 const router_sprint_1 = require("./router-sprint");
 const moment = require("moment");
 moment.locale("es");
@@ -12,20 +12,10 @@ exports.app = express();
 util_1.logger.debug("Overriding 'Express' logger");
 exports.app.use(morgan("combined", { "stream": util_1.loggerStream }));
 if (process.env.NODE_ENV == "production") {
-    util_database_1.database.connect({
-        host: '10.0.100.118',
-        user: 'ahg',
-        password: 'jira12345',
-        database: 'sauron'
-    });
+    util_1.database.connect(config_1.config.database.prod);
 }
 else {
-    util_database_1.database.connect({
-        host: 'localhost',
-        user: 'root',
-        password: 'root',
-        database: 'sauron'
-    });
+    util_1.database.connect(config_1.config.database.dev);
 }
 exports.app.set('views', path.join(__dirname, 'views'));
 exports.app.set('view engine', 'twig');

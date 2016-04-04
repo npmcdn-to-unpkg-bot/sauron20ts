@@ -1,6 +1,7 @@
 ///<reference path='./typings/main.d.ts' />
+"use strict";
 
-import {logger} from "./util-logger";
+import {logger} from "./util";
 import {repository} from "./repository";
 import {Router} from "express"
 

@@ -1,7 +1,7 @@
 ///<reference path='./typings/main.d.ts' />
+"use strict";
 
-import {logger} from "./util-logger";
-import {database} from "./util-database";
+import {logger, database} from "./util";
 import * as assert from "assert";
 import * as _ from "underscore";
 import {IQuery} from "mysql";
@@ -37,8 +37,6 @@ class Repository {
 
         var issues:Array<any> = await database.query("Select * from issuedetail where sprint_id = ?", [sprintId]);
 
-        var aIssuesId: Array<number> = _.map(issues, issue => issue.id);
-
         if(sprint.complete_date != null) {
 
             //--- Agrupamos la lista de issues de estados cambiados por issue_id y a continuación extraemos de cada agrupación
@@ -47,20 +45,41 @@ class Repository {
             //    Finalmente la recorremos y vamos actualizando la lista de issues del sprint con el estado que tenía en la fecha
             //    en que fue completado.
 
+            var aIssuesId: Array<number> = _.map(issues, issue => issue.id);
             var issuesIdx = _.object(_.map(issues, issue => [issue.id, issue]));
 
             var issuestatuses:Array<any> = await this.findStatusOfIssuesInADate(sprint.complete_date, aIssuesId);
 
-            _.chain(issuestatuses).groupBy("issue_id").map((value, key) => value[0]).each((issuestatus:any) => {
+            var issuesChangedIdx = _.chain(issuestatuses).groupBy("issue_id").map((value, key) => value[0]).map((issuestatus:any) => {
                 var issue = issuesIdx[issuestatus.issue_id];
-                issue.status_id = issuestatus.status_change_id;
-                issue.status_name = issuestatus.status_change_name;
-                issue.status_situacion = issuestatus.status_change_situacion;
+
+                if(issue.issuekey == "SC-420") console.log(issue.issuekey, issue.status_id,issuestatus.status_change_id);
+
+                issue = issue.set("status_id",issuestatus.status_change_id)
+                             .set("status_name", issuestatus.status_change_name)
+                             .set("status_situacion", issuestatus.status_change_situacion);
+
+                if(issue.issuekey == "SC-420") console.log(issue.issuekey, issue.status_id);
+
+                return issue;
+            }).groupBy("id").value();
+
+            issues = _.filter(issues,(issue) => {
+                if(issuesChangedIdx.hasOwnProperty(issue.id)) {
+                    var iss = issuesChangedIdx[issue.id][0];
+                    if(iss.issuekey == "SC-420")  console.log(iss.issuekey, iss.status_id);
+                    return issuesChangedIdx[issue.id][0];
+                }
+                return issue;
             });
+
 
         }
 
-        return issues;
+        return issues.map(issue => {
+            if(issue.issuekey == "SC-420") console.log(Object.assign({key:issue.issuekey,s:issue.status_id}));
+            return Object.assign({key:issue.issuekey,s:issue.status_id});
+        });
     }
 
 }

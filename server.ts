@@ -1,12 +1,13 @@
 ///<reference path='./typings/main.d.ts' />
+"use strict";
 
 import * as express from "express";
 import * as path from "path";
-import {logger,loggerStream} from "./util";
+import {logger,loggerStream,database} from "./util";
+import {config} from "./config";
 import * as Promise from "bluebird";
 import * as morgan from "morgan";
 import * as templates from "nunjucks";
-import {database} from "./util-database";
 import {router as sprintRouter} from "./router-sprint";
 const moment = require("moment");
 
@@ -25,20 +26,10 @@ app.use(morgan("combined",{ "stream": loggerStream }));
  * Se conecta a la base de datos
  **********************************************************************************************************************/
 if(process.env.NODE_ENV == "production") {
-    database.connect({
-        host: '10.0.100.118',
-        user: 'ahg',
-        password: 'jira12345',
-        database: 'sauron'
-    });
+    database.connect(config.database.prod);
 }
 else {
-    database.connect({
-        host: 'localhost',
-        user: 'root',
-        password: 'root',
-        database: 'sauron'
-    });
+    database.connect(config.database.dev);
 }
 
 

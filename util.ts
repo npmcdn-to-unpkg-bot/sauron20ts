@@ -1,40 +1,47 @@
 ///<reference path='./typings/main.d.ts' />
+"use strict";
 
 import {Logger,transports} from "winston";
+import {config} from "./config";
+import {createPool, IPool} from "mysql";
+import {IQuery} from "mysql";
+const Immutable = require("seamless-immutable");
 
+class AppLogger {
 
-class Logger {
-    constructor(config:Map) {
-        var transports = [];
-        if(config.get('log').console)
+    _logger: any;
+
+    constructor(config:any) {
+
+        var atransports = [];
+        if(config.log.console) {
+            atransports.push(new (transports.Console)(config.log.console));
+        }
+
+        if(config.log.file) {
+            atransports.push(new (transports.File)(config.log.file));
+        }
+        console.log(transports);
+
+        this._logger = new Logger({
+            transports: atransports,
+            exitOnError: false
+        });
+    }
+
+    get logger() {
+        return this._logger;
     }
 }
+
+const appLogger = new AppLogger(config);
 
 /**
  * Instancia de logger
  * @type {LoggerInstance}
  */
-export const logger = new Logger({
-    transports: [
-        /*
-         new winston.transports.File({
-         level: 'info',
-         filename: './logs/all-logs.log',
-         handleExceptions: true,
-         json: true,
-         maxsize: 5242880, //5MB
-         maxFiles: 5,
-         colorize: false
-         }), */
-        new transports.Console({
-            level: 'debug',
-            handleExceptions: true,
-            json: false,
-            colorize: true
-        })
-    ],
-    exitOnError: false
-});
+export const logger = appLogger.logger;
+
 /**
  * Stream de logger para sobreescribir el logger de
  * @type {{write: (function(string): void)}}
@@ -45,26 +52,55 @@ export const loggerStream = {
     }
 };
 
-/**
- * Devuelve una copia inmutable de un objeto
- * @param obj
- * @returns {any}
- * @constructor
- */
-export const Immutable = (obj: any): any => {
 
-    //--- Obtiene las propiedades del objeto
-    var propNames = Object.getOwnPropertyNames(obj);
+export interface DatabaseProfile {
+    host: string,
+    user: string,
+    password: string,
+    database: string
+}
 
-    // --- Recorre recursivamente las propiedades y las hace inmutables
-    propNames.forEach(function(name) {
-        var prop = obj[name];
+class Database {
 
-        if (typeof prop == 'object' && prop !== null)
-            Immutable(prop);
-    });
+    connectionPool:IPool;
+    profile: DatabaseProfile;
 
-    //--- Finalmente se hace así mismo immutable
-    return Object.freeze(obj);
+    connect(profile:DatabaseProfile) {
+
+        this.profile = profile;
+
+        logger.info(`Creando el pool de base de datos: ${this.profile.host}/${this.profile.database}`);
+        try {
+            this.connectionPool = createPool(this.profile);
+        }
+        catch(e) {
+            logger.error(`Error al conectar con la base de datos: ${this.profile.host}/${this.profile.database}`
+                ,e);
+            process.exit(1);
+        }
+    }
+
+    query(strSql:string,params?:Array<any>): Promise<Array<any>> {
+        logger.info(strSql + "; Params: [" + params + "]");
+        return new Promise<Array<any>>((resolve,reject) => {
+            this.connectionPool.query(strSql,params,(err,result)=> {
+                if(err) return reject(err);
+                return resolve(Immutable(result));
+            })
+        });
+    }
+
+    queryForOne(strSql:string,params?:Array<any>): Promise<any> {
+        return this.query(strSql,params).then(result => Immutable(result[0]));
+    }
+
+
+    shutdown() {
+        logger.info(`Parando el pool de base de datos: ${this.profile.host}/${this.profile.database}`);
+        this.connectionPool.end();
+
+    }
 
 }
+
+export const database = new Database();
