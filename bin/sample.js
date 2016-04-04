@@ -1,14 +1,12 @@
 "use strict";
 const ImmutableJS = require("immutable");
-var arr = [];
-for (var i = 0; i < 10; i++) {
-    var persona = {
-        id: i,
-        nombre: 'Antonio Hueso' + i,
-        edad: 24,
-        tipo: [1, 2, 3, 4, 5, 6]
-    };
-    arr.push(persona);
+var c = ImmutableJS.fromJS({ a: 1, b: 2 });
+var s = ImmutableJS.fromJS(["una", "dola"]);
+kk(c, s);
+console.log(c, s);
+function kk(o, arr) {
+    console.log(o);
+    o = o.set("a", "Mierda");
+    console.log(o);
+    arr = null;
 }
-var kk = ImmutableJS.fromJS(arr);
-kk.forEach(o => console.log(o));

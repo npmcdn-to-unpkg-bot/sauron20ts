@@ -5,23 +5,16 @@
 const ImmutableJS = require("immutable");
 import * as _ from "underscore";
 
+var c = ImmutableJS.fromJS({ a:1, b:2});
+var s = ImmutableJS.fromJS([ "una", "dola"]);
 
-var arr = [];
+kk(c,s);
 
-for(var i = 0 ; i < 10; i++) {
-    var persona = {
-        id:i,
-        nombre:'Antonio Hueso'+i,
-        edad: 24,
-        tipo:[1,2,3,4,5,6]
-    };
+console.log(c,s);
 
-    arr.push(persona);
+function kk(o:any,arr:Array<string>): void {
+    console.log(o);
+    o = o.set("a", "Mierda");
+    console.log(o);
+    arr = null;
 }
-
-var kk = ImmutableJS.fromJS(arr);
-
-
-kk.forEach(o => console.log(o));
-
-
