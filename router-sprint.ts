@@ -1,6 +1,4 @@
 ///<reference path='./typings/main.d.ts' />
-"use strict";
-
 import {logger} from "./util";
 import {repository} from "./repository";
 import {Router} from "express"
@@ -12,7 +10,7 @@ router.use('/result/:projectKey/:sprintId/resumen-general', async (req, res, nex
     try {
         var issues = await repository.findSnapShotIssuesFromSprint(req.params.sprintId);
 
-        res.send(issues);
+        res.send(issues.toJS());
     }
     catch(e) {
         next(e);

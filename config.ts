@@ -1,10 +1,10 @@
 ///<reference path='./typings/main.d.ts' />
 "use strict";
 
-const Immutable = require("seamless-immutable");
+const Immutable = require("immutable");
 
 
-export var config = Immutable({
+export var config = Immutable.fromJS({
 
     database: {
 

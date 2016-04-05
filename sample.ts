@@ -1,20 +1,19 @@
 ///<reference path='./typings/main.d.ts' />
-"use strict";
+
 //var config = require("./config");
+import {logger, database} from "./util";
+import {config} from "./config";
+import * as Immutable from "immutable";
 
-const ImmutableJS = require("immutable");
-import * as _ from "underscore";
+logger.info("Vamos cabrón");
+database.connect(config.toJS().database.prod);
 
-var c = ImmutableJS.fromJS({ a:1, b:2});
-var s = ImmutableJS.fromJS([ "una", "dola"]);
+function q() {
+    console.log("Mierda");
+    database.queryForOne("Select * from sprint where id = ?", Immutable.List([36])).then(sprint => {
+        console.log(sprint);
+    });
 
-kk(c,s);
-
-console.log(c,s);
-
-function kk(o:any,arr:Array<string>): void {
-    console.log(o);
-    o = o.set("a", "Mierda");
-    console.log(o);
-    arr = null;
 }
+
+q();

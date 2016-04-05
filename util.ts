@@ -1,11 +1,8 @@
 ///<reference path='./typings/main.d.ts' />
-"use strict";
-
 import {Logger,transports} from "winston";
 import {config} from "./config";
-import {createPool, IPool} from "mysql";
-import {IQuery} from "mysql";
-const Immutable = require("seamless-immutable");
+import {createPool, IPool,IQuery} from "mysql";
+import * as Immutable from "immutable";
 
 class AppLogger {
 
@@ -14,15 +11,13 @@ class AppLogger {
     constructor(config:any) {
 
         var atransports = [];
-        if(config.log.console) {
-            atransports.push(new (transports.Console)(config.log.console));
+        if(config.get("log") && config.get("log").get("console")) {
+            atransports.push(new (transports.Console)(config.get("log").get("console").toJS()));
         }
 
-        if(config.log.file) {
-            atransports.push(new (transports.File)(config.log.file));
+        if(config.get("log") && config.get("log").get("file")) {
+            atransports.push(new (transports.File)(config.get("log").get("file").toJS()));
         }
-        console.log(transports);
-
         this._logger = new Logger({
             transports: atransports,
             exitOnError: false
@@ -80,18 +75,19 @@ class Database {
         }
     }
 
-    query(strSql:string,params?:Array<any>): Promise<Array<any>> {
-        logger.info(strSql + "; Params: [" + params + "]");
-        return new Promise<Array<any>>((resolve,reject) => {
+    query(strSql:string,iparams?:Immutable.List<any>): Promise<Immutable.List<any>> {
+        var params = iparams.toJS();
+        //logger.info(strSql + "; Params: [" + params + "]");
+        return new Promise<Immutable.List<any>>((resolve,reject) => {
             this.connectionPool.query(strSql,params,(err,result)=> {
                 if(err) return reject(err);
-                return resolve(Immutable(result));
+                return resolve(Immutable.fromJS(Immutable.fromJS(JSON.parse(JSON.stringify(result)))));
             })
         });
     }
 
-    queryForOne(strSql:string,params?:Array<any>): Promise<any> {
-        return this.query(strSql,params).then(result => Immutable(result[0]));
+    queryForOne(strSql:string,params?:Immutable.List<any>): Promise<Immutable.Map<any,any>> {
+        return this.query(strSql,params).then(result => result.get(0));
     }
 
 

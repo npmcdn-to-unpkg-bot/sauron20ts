@@ -9,3 +9,4 @@
 /// <reference path="main/ambient/serve-static/index.d.ts" />
 /// <reference path="main/ambient/underscore/index.d.ts" />
 /// <reference path="main/ambient/winston/index.d.ts" />
+/// <reference path="../node_modules/immutable/dist/immutable.d.ts" />
