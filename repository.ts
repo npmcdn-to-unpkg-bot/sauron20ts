@@ -31,8 +31,6 @@ class Repository {
 
         var sprint: Immutable.Map<any,any> = await database.queryForOne("Select * from sprint where id = ?",Immutable.List([sprintId]));
 
-        console.log(sprint);
-
         assert.notEqual(sprint,null,"No se encuentra el sprint para el ID: "+sprintId);
 
         var issues:Immutable.List<any> = await database.query("Select * from issuedetail where sprint_id = ?", Immutable.List([sprintId]));
