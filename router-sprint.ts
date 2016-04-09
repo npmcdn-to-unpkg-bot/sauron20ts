@@ -10,7 +10,7 @@ router.use('/result/:projectKey/:sprintId/resumen-general', async (req, res, nex
     try {
         var issues = await repository.findSnapShotIssuesFromSprint(req.params.sprintId);
 
-        res.send(issues.toJS());
+        res.send(issues);
     }
     catch(e) {
         next(e);

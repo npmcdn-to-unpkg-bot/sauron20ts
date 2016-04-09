@@ -1,10 +1,6 @@
 ///<reference path='./typings/main.d.ts' />
-"use strict";
 
-const Immutable = require("immutable");
-
-
-export var config = Immutable.fromJS({
+export var config = {
 
     database: {
 
@@ -26,7 +22,7 @@ export var config = Immutable.fromJS({
         console: {
             level: 'debug',
             handleExceptions: true,
-            json: false,
+            humanReadableUnhandledException: true,
             colorize: true
         }
         /*,
@@ -41,4 +37,4 @@ export var config = Immutable.fromJS({
         }*/
     }
 
-});
+};

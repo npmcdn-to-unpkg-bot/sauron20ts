@@ -1,18 +1,19 @@
 ///<reference path='./typings/main.d.ts' />
 
-//var config = require("./config");
 import {logger, database} from "./util";
 import {config} from "./config";
-import * as Immutable from "immutable";
 
-logger.info("Vamos cabrón");
-database.connect(config.toJS().database.prod);
+database.connect(config.database.dev);
 
-function q() {
-    console.log("Mierda");
-    database.queryForOne("Select * from sprint where id = ?", Immutable.List([36])).then(sprint => {
-        console.log(sprint);
-    });
+async function q() {
+
+    try {
+        var sprint = await database.queryForOne("Select * from sprint where id = ?", [36]);
+    }
+    catch(e) {
+        console.log("PAHA");
+        logger.error(e);
+    }
 
 }
 

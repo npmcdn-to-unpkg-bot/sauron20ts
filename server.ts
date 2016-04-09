@@ -26,10 +26,10 @@ app.use(morgan("combined",{ "stream": loggerStream }));
  * Se conecta a la base de datos
  **********************************************************************************************************************/
 if(process.env.NODE_ENV == "production") {
-    database.connect(config.get("database").get("prod").toJS());
+    database.connect(config.database.prod);
 }
 else {
-    database.connect(config.get("database").get("dev").toJS());
+    database.connect(config.database.dev);
 }
 
 
