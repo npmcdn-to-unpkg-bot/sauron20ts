@@ -7,6 +7,20 @@ import * as _ from "underscore";
 
 class Repository {
 
+    findSprintById(sprintId:number):any {
+
+        assert.notEqual(sprintId,null,"El parámetro de entrada  'sprintId' está vacío");
+
+        return database.queryForOne(
+            "select *, " +
+            "(select count(*) from issuedetail where sprint_id = ?) as totalTareas, " +
+            "(select sum(puntos_historia) from issuedetail where sprint_id = ?) as totalPuntosHistoria, " +
+            "5 * (DATEDIFF(end_date, NOW()) DIV 7) + MID('0123444401233334012222340111123400012345001234550', 7 * NOW() + WEEKDAY(end_date) + 1, 1) as jornadas_pendientes,"+
+            "5 * (DATEDIFF(end_date, start_date) DIV 7) + MID('0123444401233334012222340111123400012345001234550', 7 * WEEKDAY(start_date) + WEEKDAY(end_date) + 1, 1) as jornadas "+
+            " from sprint " +
+            "where id = ?",[sprintId,sprintId,sprintId]);
+    }
+
     /**
      * Retorna las tareas con el estado que tenían antes de una fecha determinada
      * @param fecha
@@ -50,7 +64,7 @@ class Repository {
             
             var i = 0;
 
-            issuestatuses.forEach(issuestatus => {
+            issuestatuses.forEach((issuestatus:any) => {
                 if(issuesIdx.hasOwnProperty(issuestatus.issue_id)) {
                     var issue:any = issuesIdx[issuestatus.issue_id][0];
                     issue.status_id =  issuestatus.status_change_id;
