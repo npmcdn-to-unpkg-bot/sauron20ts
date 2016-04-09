@@ -1,5 +1,5 @@
 ///<reference path='./typings/main.d.ts' />
-import {logger, database} from "./util";
+import {checkNotNull,logger, database} from "./util";
 import * as assert from "assert";
 import {IQuery} from "mysql";
 import * as Promise from "bluebird";
@@ -7,18 +7,49 @@ import * as _ from "underscore";
 
 class Repository {
 
-    findSprintById(sprintId:number):any {
+    /**
+     * Busca un proyecto por key
+     * @param projectKey
+     * @returns {Promise<any>}
+     */
+    findProjectByKey(projectKey:string) {
+        checkNotNull("projectKey",projectKey);
 
-        assert.notEqual(sprintId,null,"El parámetro de entrada  'sprintId' está vacío");
+        return database.queryForOne("Select * from project where projectkey = ?",[projectKey]);
+    }
 
-        return database.queryForOne(
+    /**
+     * Busca un sprint por ID. Calcula por SQL el total de tareas, el total de puntos de historia, el total de tareas completadas
+     * , el total de puntos de historia completados, las jornadas y las jornadas que quedan para acabar.
+     * @param sprintId
+     * @returns {Promise<any>}
+     */
+    async findSprintById(sprintId:number) {
+
+        checkNotNull("sprintId",sprintId);
+
+        var sprint:any = await database.queryForOne(
             "select *, " +
             "(select count(*) from issuedetail where sprint_id = ?) as totalTareas, " +
             "(select sum(puntos_historia) from issuedetail where sprint_id = ?) as totalPuntosHistoria, " +
+            "(select count(*) from issuedetail where sprint_id = ? and status_completado = 1) as totalTareasCompletadas, " +
+            "(select sum(puntos_historia) from issuedetail where sprint_id = ? and status_completado = 1) as totalPuntosHistoriaCompletados, " +
             "5 * (DATEDIFF(end_date, NOW()) DIV 7) + MID('0123444401233334012222340111123400012345001234550', 7 * NOW() + WEEKDAY(end_date) + 1, 1) as jornadas_pendientes,"+
             "5 * (DATEDIFF(end_date, start_date) DIV 7) + MID('0123444401233334012222340111123400012345001234550', 7 * WEEKDAY(start_date) + WEEKDAY(end_date) + 1, 1) as jornadas "+
             " from sprint " +
-            "where id = ?",[sprintId,sprintId,sprintId]);
+            "where id = ?",[sprintId,sprintId,sprintId,sprintId,sprintId]);
+
+        if(sprint.jornadas_pendientes < 0) {
+            sprint.jornadas_pendientes = 0;
+            sprint.sprintpercJornadasTranscurridas = 100;
+        }
+        else {
+            sprint.percJornadasTranscurridas = Math.round(((sprint.jornadas - sprint.jornadas_pendientes) * 100) / sprint.jornadas);
+        }
+
+        sprint.percTotalPuntosHistoriaCompletados = Math.round((sprint.totalPuntosHistoriaCompletados * 100) / sprint.totalPuntosHistoria);
+
+        return sprint;
     }
 
     /**
@@ -29,8 +60,8 @@ class Repository {
      */
     findStatusOfIssuesInADate(fecha: Date,aIssuesId: Array<number>) {
 
-        assert.notEqual(fecha,null,"El parámetro de entrada 'fecha' está vacío");
-        assert.notEqual(aIssuesId,null,"El parámetro de entrada 'aIssuesId' está vacío");
+        checkNotNull("fecha",fecha);
+        checkNotNull("aIssuesId",aIssuesId);
 
         return database.query("select * " +
             "from issuestatus i " +
@@ -41,7 +72,7 @@ class Repository {
 
     async findSnapShotIssuesFromSprint(sprintId: number) {
 
-        assert.notEqual(sprintId,null,"El parámetro de entrada  'sprintId' está vacío");
+        checkNotNull("sprintId",sprintId);
 
         var sprint = await database.queryForOne("Select * from sprint where id = ?",[sprintId]);
 

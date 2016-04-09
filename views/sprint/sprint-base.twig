@@ -1,6 +1,6 @@
-{% set mainMenuOption = "sprint" %}
-
 {% extends "layout.twig" %}
+
+{% set mainMenuOption = "sprint" %}
 
 {% block body %}
 
@@ -9,15 +9,11 @@
         <div class="row">
 
             <div class="col-md-3 hidden-print">
-                <!--
-                {%  include "sprint/sprint-menu.nj" %}
-                -->
-                <h1>Incluir Menú</h1>
+                {%  include "sprint/sprint-menu.twig" %}
             </div>
 
             <div class="col-md-9">
 
-                <h1>Incluir el BODY!</h1>
                 {% block sprintbody %}
 
                 {% endblock %}

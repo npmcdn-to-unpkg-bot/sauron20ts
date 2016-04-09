@@ -22,9 +22,12 @@ router.use('/search', async (req, res, next) => {
 router.use('/result/:projectKey/:sprintId/resumen-general', async (req, res, next) => {
 
     try {
-        var issues = await repository.findSnapShotIssuesFromSprint(req.params.sprintId);
+        var sprint:any = await repository.findSprintById(req.params.sprintId);
 
-        res.send(issues);
+        var project:any = await repository.findProjectByKey(req.params.projectKey);
+
+        res.render("sprint/resumen", {sprint:sprint, project:project, projectKey: req.params.projectKey
+            , sprintId: req.params.sprintId});
     }
     catch(e) {
         next(e);

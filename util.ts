@@ -2,6 +2,7 @@
 import {Logger,transports} from "winston";
 import {config} from "./config";
 import {createPool, IPool,IQuery} from "mysql";
+import * as assert from "assert";
 
 class AppLogger {
 
@@ -99,3 +100,7 @@ class Database {
 }
 
 export const database = new Database();
+
+export const checkNotNull = function(paramName:string,param:any) {
+    assert.notEqual(param,null,`El parámetro de entrada '${paramName}' está vacío`);
+}

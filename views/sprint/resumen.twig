@@ -1,4 +1,4 @@
-{% extends "sprint/sprint-base.nj" %}
+{% extends "sprint/sprint-base.twig" %}
 
 {% set sprintMenuOption = "infg" %}
 {% set hiddenBody = true %}
@@ -22,7 +22,7 @@
                 <tr>
                     <th><span>Proyecto</span></th>
                     <td>
-                        <span>{{sprint.proyecto.name}}</span>
+                        <span>{{project.name}}</span>
                     </td>
                 </tr>
                 <tr>
