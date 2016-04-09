@@ -41,7 +41,7 @@ class Repository {
 
         if(sprint.jornadas_pendientes < 0) {
             sprint.jornadas_pendientes = 0;
-            sprint.sprintpercJornadasTranscurridas = 100;
+            sprint.percJornadasTranscurridas = 100;
         }
         else {
             sprint.percJornadasTranscurridas = Math.round(((sprint.jornadas - sprint.jornadas_pendientes) * 100) / sprint.jornadas);
