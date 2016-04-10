@@ -1,6 +1,5 @@
 ///<reference path='./typings/main.d.ts' />
-import {checkNotNull,logger, database} from "./util";
-import * as assert from "assert";
+import {checkNotFound,checkNotNull,logger, database} from "./util";
 import {IQuery} from "mysql";
 import * as Promise from "bluebird";
 import * as _ from "underscore";
@@ -30,10 +29,6 @@ class Repository {
 
         var sprint:any = await database.queryForOne(
             "select *, " +
-            "(select count(*) from issuedetail where sprint_id = ?) as totalTareas, " +
-            "(select sum(puntos_historia) from issuedetail where sprint_id = ?) as totalPuntosHistoria, " +
-            "(select count(*) from issuedetail where sprint_id = ? and status_completado = 1) as totalTareasCompletadas, " +
-            "(select sum(puntos_historia) from issuedetail where sprint_id = ? and status_completado = 1) as totalPuntosHistoriaCompletados, " +
             "5 * (DATEDIFF(end_date, NOW()) DIV 7) + MID('0123444401233334012222340111123400012345001234550', 7 * NOW() + WEEKDAY(end_date) + 1, 1) as jornadas_pendientes,"+
             "5 * (DATEDIFF(end_date, start_date) DIV 7) + MID('0123444401233334012222340111123400012345001234550', 7 * WEEKDAY(start_date) + WEEKDAY(end_date) + 1, 1) as jornadas "+
             " from sprint " +
@@ -41,14 +36,7 @@ class Repository {
 
         if(sprint.jornadas_pendientes < 0) {
             sprint.jornadas_pendientes = 0;
-            sprint.percJornadasTranscurridas = 100;
         }
-        else {
-            sprint.percJornadasTranscurridas = Math.round(((sprint.jornadas - sprint.jornadas_pendientes) * 100) / sprint.jornadas);
-        }
-
-        sprint.percTotalPuntosHistoriaCompletados = Math.round((sprint.totalPuntosHistoriaCompletados * 100) / sprint.totalPuntosHistoria);
-
         return sprint;
     }
 
@@ -76,7 +64,7 @@ class Repository {
 
         var sprint = await database.queryForOne("Select * from sprint where id = ?",[sprintId]);
 
-        assert.notEqual(sprint,null,"No se encuentra el sprint para el ID: "+sprintId);
+        checkNotFound("sprint", sprint,sprintId);
 
         var issues = await database.query("Select * from issuedetail where sprint_id = ?", [sprintId]);
 

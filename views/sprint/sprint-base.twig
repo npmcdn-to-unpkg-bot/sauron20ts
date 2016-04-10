@@ -14,9 +14,29 @@
 
             <div class="col-md-9">
 
-                {% block sprintbody %}
+                <div class="row">
 
-                {% endblock %}
+                    <div class="col-md-12">
+                        <h3 style="margin: 0" class="text-primary">
+                            {% block reporttitle %}Titulo del Report{% endblock %}
+                        </h3>
+                        <hr class="hr-report"/>
+                    </div>
+
+                    <div class="col-md-12">
+                        {% block reportsummary %}
+
+                        {% endblock %}
+                    </div>
+
+                    <div class="col-md-12">
+                        {% block reportdetail %}
+
+                        {% endblock %}
+                    </div>
+
+                </div>
+
 
             </div>
 

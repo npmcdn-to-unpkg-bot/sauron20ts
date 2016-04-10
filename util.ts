@@ -104,3 +104,7 @@ export const database = new Database();
 export const checkNotNull = function(paramName:string,param:any) {
     assert.notEqual(param,null,`El parámetro de entrada '${paramName}' está vacío`);
 }
+
+export const checkNotFound = function(resultName:string,result:any,resultId:any) {
+    assert.notEqual(result,null,`No se ha encontrado '${resultName}' para el identificador: ${resultId}`);
+}
