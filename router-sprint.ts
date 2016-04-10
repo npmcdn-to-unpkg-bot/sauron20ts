@@ -40,11 +40,8 @@ router.use('/result/:projectKey/:sprintId/situacion', async (req, res, next) => 
 
     try {
         var reportResult:any = await sprintReport.situacion(req.params.sprintId);
-        res.send(reportResult);
-/*
-        res.render("sprint/resumen", Object.assign(reportResult, { projectKey: req.params.projectKey
+        res.render("sprint/situacion", Object.assign(reportResult, { projectKey: req.params.projectKey
             , sprintId: req.params.sprintId}));
-            */
     }
     catch(e) {
         next(e);

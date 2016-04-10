@@ -1,0 +1,74 @@
+{% extends "sprint/sprint-base.twig" %}
+
+{% set sprintMenuOption = "situacion" %}
+{% set hiddenBody = false %}
+
+{% block sprintbody %}
+
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <h3 style="margin: 0" class="text-primary">Tareas agrupadas por situación</h3>
+            <hr class="hr-report"/>
+        </div>
+
+        <div class="col-md-12">
+            <h1>FILTRO</h1>
+        </div>
+
+        <div class="col-md-12">
+            <h1>CHART</h1>
+        </div>
+
+        <div class="col-md-12">
+            <h1>TABLA RESUMEN</h1>
+        </div>
+
+        <div class="col-md-12">
+            <h1>Detalle</h1>
+        </div>
+<!--
+        <div class="col-md-12">
+            <div id="chartId"></div>
+        </div>
+-->
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(function(){
+
+            var sprint = {{ sprint | dump }};
+
+            $("body").removeClass("hidden");
+
+            var chartcols = [
+                ['string','Tipo'],
+                ['number','% Completado'],
+                ['number','% Transcurrido']
+            ];
+
+            var chartrows = [
+                ['',sprint.percTotalPuntosHistoriaCompletados, sprint.percJornadasTranscurridas],
+                ['',sprint.percTotalPuntosHistoriaCompletados, sprint.percJornadasTranscurridas]
+            ];
+
+            var chartconfig = {
+                title : 'Avance de sprint',
+                vAxis: { minValue:0},
+                hAxis: { minValue:0, maxValue:100 }
+            };
+
+            chart("chartId","AreaChart",chartcols,chartrows,chartconfig);
+
+        });
+
+    </script>
+
+{% endblock %}
