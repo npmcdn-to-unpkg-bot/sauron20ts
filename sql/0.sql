@@ -24,7 +24,7 @@ CREATE OR REPLACE VIEW issues AS
          IF(i.issuestatus = 1 or i.issuestatus = 10005,'Pendiente'
          ,IF(i.issuestatus = 10200,'Detenida'
          ,IF(i.issuestatus = 10004,'En curso'
-         ,IF(i.issuestatus = 5,'Pte. pruebas'
+         ,IF(i.issuestatus = 5 or i.issuestatus = 10000,'Pte. pruebas'
          ,IF(i.issuestatus = 10001,'Probando'
          ,IF(i.issuestatus is null,null,'Finalizada')))))) as status_situacion,
          i.issuetype as issuetype_id,
@@ -95,7 +95,7 @@ CREATE OR REPLACE VIEW issuestatus AS
          IF(ci.NEWVALUE = 1 or ci.NEWVALUE = 10005,'Pendiente'
         ,IF(ci.NEWVALUE = 10200,'Detenida'
         ,IF(ci.NEWVALUE = 10004,'En curso'
-        ,IF(ci.NEWVALUE = 5,'Pte. pruebas'
+        ,IF(ci.NEWVALUE = 5 or ci.NEWVALUE = 10000,'Pte. pruebas'
         ,IF(ci.NEWVALUE = 10001,'Probando'
         ,IF(ci.NEWVALUE is null,null,'Finalizada')))))) as status_change_situacion,
          ci.OLDVALUE as status_old_id,

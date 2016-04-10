@@ -29,7 +29,7 @@ class SprintReport {
         sprint.totalPuntosHistoria = 0;
         sprint.totalPuntosHistoriaCompletados = 0;
 
-        sprint = issues.reduce((sprint,issue) => {
+        sprint = issues.reduce((sprint:any,issue:any) => {
             sprint.totalTareas ++;
             sprint.totalPuntosHistoria += issue.puntos_historia;
             if(issue.status_completado == 1) {
@@ -59,7 +59,7 @@ class SprintReport {
 
         issues = await repository.completeIssueInfo(issues);
 
-        let result = {
+        let result:any = {
             "Detenida":{count:0,sum:0,issues:[]},
             "Pendiente":{count:0,sum:0,issues:[]},
             "En curso":{count:0,sum:0,issues:[]},
@@ -68,18 +68,31 @@ class SprintReport {
             "Finalizada":{count:0,sum:0,issues:[]}
         };
 
-        result = issues.reduce((result,issue) => {
-            let summary = result[issue.status_situacion];
+        result = issues.reduce((r:any,issue:any) => {
+            let summary = r[issue.status_situacion];
             checkNotNull("Estado situación",summary);
 
             summary.count ++;
             summary.sum += issue.puntos_historia;
             summary.issues.push(issue);
 
-            return result;
+            return r;
         },result);
 
-        return result;
+        const chart = {
+            cols: [
+                ['string','Situación'],
+                ['number','Esfuerzo']
+            ],
+            rows: Object.keys(result).map(key => [key,result[key].sum]),
+            config: {
+                title : 'Avance de sprint' }
+        };
+
+        return {
+            data:result,
+            chartInfo: chart
+        };
 
     }
 

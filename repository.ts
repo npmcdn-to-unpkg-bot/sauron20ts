@@ -89,7 +89,7 @@ class Repository {
 
         checkNotNull("sprintId",sprintId);
 
-        var sprint = await database.queryForOne("Select * from sprint where id = ?",[sprintId]);
+        const sprint = await database.queryForOne("Select * from sprint where id = ?",[sprintId]);
 
         checkNotFound("sprint", sprint,sprintId);
 
@@ -107,7 +107,9 @@ class Repository {
             var issuesIdx = _.groupBy(issues,issue => issue.id);
 
             var issuestatuses = await this.findStatusOfIssuesInADate(sprint.complete_date, aIssuesId);
-            
+
+            issuestatuses = _.chain(issuestatuses).groupBy("issue_id").map((value:any[],key:string) => value[0]).value();
+
             var i = 0;
 
             issuestatuses.forEach((issuestatus:any) => {
@@ -144,7 +146,7 @@ class Repository {
         var componentsIdx = _.groupBy(data[0],"issue_id");
         var versionsIdx = _.groupBy(data[1],"issue_id");
 
-        issues.forEach(issue => {
+        issues.forEach((issue:any) => {
             issue.components = componentsIdx[issue.id]?componentsIdx[issue.id]:[];
             issue.versions = versionsIdx[issue.id]?versionsIdx[issue.id]:[];
         });
