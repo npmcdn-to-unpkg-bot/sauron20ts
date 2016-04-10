@@ -3,112 +3,121 @@
 {% set sprintMenuOption = "infg" %}
 {% set hiddenBody = true %}
 
-{% block reporttitle %}Información general{% endblock %}
+{% block sprintbody %}
 
-{% block reportsummary %}
 
-    <table  class="table-resumen table table-bordered">
-        <tbody>
-        <tr class="text-info">
-            <th colSpan="2"><h4><i class="glyphicon glyphicon-bookmark"></i> Datos identificativos</h4></th>
-        </tr>
-        <tr>
-            <th><span>Proyecto</span></th>
-            <td>
-                <span>{{project.name}}</span>
-            </td>
-        </tr>
-        <tr>
-            <th><span>Sprint ID</span></th>
-            <td>
-                <span>{{sprint.id}}</span>
-            </td>
-        </tr>
-        <tr class="text-info">
-            <th colSpan="2"><h4><i class="glyphicon glyphicon-calendar"></i> Duración</h4></th>
-        </tr>
-        <tr>
-            <th><span>Duración</span></th>
-            <td>
-                <span>{{sprint.jornadas}} días.</span>
-            </td>
-        </tr>
-        <tr>
-            <th><span>Comienza</span></th>
-            <td>
-                <span>{{moment(sprint.start_date).format('dddd[,] DD [de] MMMM [de] YYYY')}}</span>
-            </td>
-        </tr>
-        <tr>
-            <th><span>Finaliza</span></th>
-            <td>
-                <span>{{moment(sprint.end_date).format('dddd[,] DD [de] MMMM [de] YYYY')}}</span>
-            </td>
-        </tr>
-        <tr class="text-info">
-            <th colSpan="2"><h4><i class="glyphicon glyphicon-comment"></i> Situación actual</h4></th>
-        </tr>
-        <tr>
-            <th><span>Tiempo transcurrido</span></th>
-            <td>
-    <span>
-        <span>{{sprint.percJornadasTranscurridas}}%</span>
-    </span>
-            </td>
-        </tr>
-        <tr>
-            <th><span>Estado</span></th>
-            <td>
-    <span>
-        {% if sprint.closed %}
-            <span class="label label-success">Finalizado</span>
-        {% elif sprint.started %}
-            <span class="label label-primary">En curso</span>
-        {% else %}
-            <span class="label label-warning">Futuro</span>
-        {% endif %}
-    </span>
-            </td>
-        </tr>
-        <tr>
-            <th><span>% Completado</span></th>
-            <td>
-                <span>{{sprint.percTotalPuntosHistoriaCompletados}}%</span>
-            </td>
-        </tr>
+    <div class="row">
 
-        <tr>
-            <th><span>Esfuerzo</span></th>
-            <td>
-                <span>{{sprint.totalPuntosHistoria}}</span>
-            </td>
-        </tr>
-        <tr>
-            <th><span>Esfuerzo completado</span></th>
-            <td>
-                <span>{{sprint.totalPuntosHistoriaCompletados}}</span>
-            </td>
-        </tr>
-        <tr>
-            <th><span>Tareas</span></th>
-            <td>
-                <span>{{sprint.totalTareas}}</span>
-            </td>
-        </tr>
-        <tr>
-            <th><span>Tareas completadas</span></th>
-            <td>
-                <span>{{sprint.totalTareasCompletadas}}</span>
-            </td>
-        </tr>
-        </tbody>
+        <div class="col-md-12">
+            <h3 style="margin: 0" class="text-primary">Información general</h3>
+            <hr class="hr-report"/>
+        </div>
 
-    </table>
+        <div class="col-md-12">
+            <table  class="table-resumen table table-bordered">
+                <tbody>
+                <tr class="text-info">
+                    <th colSpan="2"><h4><i class="glyphicon glyphicon-bookmark"></i> Datos identificativos</h4></th>
+                </tr>
+                <tr>
+                    <th><span>Proyecto</span></th>
+                    <td>
+                        <span>{{sprint.proyecto.name}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Sprint ID</span></th>
+                    <td>
+                        <span>{{sprint.id}}</span>
+                    </td>
+                </tr>
+                <tr class="text-info">
+                    <th colSpan="2"><h4><i class="glyphicon glyphicon-calendar"></i> Duración</h4></th>
+                </tr>
+                <tr>
+                    <th><span>Duración</span></th>
+                    <td>
+                        <span>{{sprint.jornadas}} días.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Comienza</span></th>
+                    <td>
+                        <span>{{moment(sprint.start_date).format('dddd[,] DD [de] MMMM [de] YYYY')}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Finaliza</span></th>
+                    <td>
+                        <span>{{moment(sprint.end_date).format('dddd[,] DD [de] MMMM [de] YYYY')}}</span>
+                    </td>
+                </tr>
+                <tr class="text-info">
+                    <th colSpan="2"><h4><i class="glyphicon glyphicon-comment"></i> Situación actual</h4></th>
+                </tr>
+                <tr>
+                    <th><span>Tiempo transcurrido</span></th>
+                    <td>
+            <span>
+                <span>{{sprint.percJornadasTranscurridas}}%</span>
+            </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Estado</span></th>
+                    <td>
+            <span>
+                {% if sprint.closed %}
+                    <span class="label label-success">Finalizado</span>
+                {% elif sprint.started %}
+                    <span class="label label-primary">En curso</span>
+                {% else %}
+                    <span class="label label-warning">Futuro</span>
+                {% endif %}
+            </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>% Completado</span></th>
+                    <td>
+                        <span>{{sprint.percTotalPuntosHistoriaCompletados}}%</span>
+                    </td>
+                </tr>
 
-{% endblock %}
+                <tr>
+                    <th><span>Esfuerzo</span></th>
+                    <td>
+                        <span>{{sprint.totalPuntosHistoria}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Esfuerzo completado</span></th>
+                    <td>
+                        <span>{{sprint.totalPuntosHistoriaCompletados}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Tareas</span></th>
+                    <td>
+                        <span>{{sprint.totalTareas}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Tareas completadas</span></th>
+                    <td>
+                        <span>{{sprint.totalTareasCompletadas}}</span>
+                    </td>
+                </tr>
+                </tbody>
 
-{% block reportdetail  %}
-    <div id="chartId"></div>
+            </table>
+        </div>
+
+        <div class="col-md-12">
+            <div id="chartId"></div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block script %}
