@@ -7,6 +7,26 @@ import * as _ from "underscore";
 class Repository {
 
     /**
+     * Retorna los componentes de un grupo de issuedIds
+     * @param aIssuesId
+     * @returns {Promise<Array<any>>}
+     */
+    findComponentsOfIssues(aIssuesId:Array<any>) {
+        checkNotNull("aIssuesId",aIssuesId);
+        return database.query("select * from issuecomponent where issue_id in(?)", [aIssuesId]);
+    }
+
+    /**
+     * Retorna las versiones de un grupo de issuedIds
+     * @param aIssuesId
+     * @returns {Promise<Array<any>>}
+     */
+    findVersionsOfIssues(aIssuesId:Array<any>) {
+        checkNotNull("aIssuesId",aIssuesId);
+        return database.query("select * from issueversion where issue_id in(?)", [aIssuesId]);
+    }
+
+    /**
      * Busca un proyecto por key
      * @param projectKey
      * @returns {Promise<any>}
@@ -23,21 +43,22 @@ class Repository {
      * @param sprintId
      * @returns {Promise<any>}
      */
-    async findSprintById(sprintId:number) {
+    findSprintById(sprintId:number) {
 
         checkNotNull("sprintId",sprintId);
 
-        var sprint:any = await database.queryForOne(
+        return database.queryForOne(
             "select *, " +
             "5 * (DATEDIFF(end_date, NOW()) DIV 7) + MID('0123444401233334012222340111123400012345001234550', 7 * NOW() + WEEKDAY(end_date) + 1, 1) as jornadas_pendientes,"+
             "5 * (DATEDIFF(end_date, start_date) DIV 7) + MID('0123444401233334012222340111123400012345001234550', 7 * WEEKDAY(start_date) + WEEKDAY(end_date) + 1, 1) as jornadas "+
             " from sprint " +
-            "where id = ?",[sprintId,sprintId,sprintId,sprintId,sprintId]);
+            "where id = ?",[sprintId,sprintId,sprintId,sprintId,sprintId]).then(sprint => {
 
-        if(sprint.jornadas_pendientes < 0) {
-            sprint.jornadas_pendientes = 0;
-        }
-        return sprint;
+            if(sprint.jornadas_pendientes < 0) {
+                sprint.jornadas_pendientes = 0;
+            }
+            return sprint;
+        });
     }
 
     /**
@@ -58,6 +79,12 @@ class Repository {
             "order by i.issue_id,i.status_change_date desc", [aIssuesId,fecha]);
     }
 
+    /**
+     * Retorna las tareas asociadads a un sprint. Si el sprint stá completo las tareas tendrán el estado que tenían en el
+     * momento del cierre del sprint.
+     * @param sprintId
+     * @returns {Array<any>}
+     */
     async findSnapShotIssuesFromSprint(sprintId: number) {
 
         checkNotNull("sprintId",sprintId);
@@ -93,6 +120,34 @@ class Repository {
             });
 
         }
+
+        return issues;
+    }
+
+    /**
+     * Busca las versiones y los componentes de las tareas que contiene el array de entrada y añade a cada issue un
+     * campo 'components' y otro 'versions'
+     * @param issues
+     * @returns {Array<any>}
+     */
+    async completeIssueInfo(issues:Array<any>) {
+
+        if(issues == null || issues.length == 0) return issues;
+
+        const aIssuesId = issues.map(issue => issue.id);
+
+        const data = await Promise.all([
+            this.findComponentsOfIssues(aIssuesId),
+            this.findVersionsOfIssues(aIssuesId)
+        ]);
+
+        var componentsIdx = _.groupBy(data[0],"issue_id");
+        var versionsIdx = _.groupBy(data[1],"issue_id");
+
+        issues.forEach(issue => {
+            issue.components = componentsIdx[issue.id]?componentsIdx[issue.id]:[];
+            issue.versions = versionsIdx[issue.id]?versionsIdx[issue.id]:[];
+        });
 
         return issues;
     }

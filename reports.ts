@@ -14,9 +14,15 @@ class SprintReport {
      */
     async resumenGeneral(projectKey:string, sprintId:number) {
 
-        const project = await repository.findProjectByKey(projectKey);
-        let sprint = await repository.findSprintById(sprintId);
-        const issues = await repository.findSnapShotIssuesFromSprint(sprintId);
+        var results = await Promise.all([
+            repository.findProjectByKey(projectKey),
+            repository.findSprintById(sprintId),
+            repository.findSnapShotIssuesFromSprint(sprintId)
+        ]);
+
+        const project:any = results[0];
+        let sprint:any = results[1];
+        const issues:Array<any> = results[2];
 
         sprint.totalTareas = 0;
         sprint.totalTareasCompletadas = 0;
@@ -49,7 +55,9 @@ class SprintReport {
      */
     async situacion(sprintId:number) {
 
-        const issues = await repository.findSnapShotIssuesFromSprint(sprintId);
+        let issues = await repository.findSnapShotIssuesFromSprint(sprintId);
+
+        issues = await repository.completeIssueInfo(issues);
 
         let result = {
             "Detenida":{count:0,sum:0,issues:[]},
