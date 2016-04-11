@@ -82,9 +82,10 @@ class SprintReport {
         const chart = {
             cols: [
                 ['string','Situación'],
+                ['number','Tareas'],
                 ['number','Esfuerzo']
             ],
-            rows: Object.keys(result).map(key => [key,result[key].sum]),
+            rows: Object.keys(result).map(key => [key,result[key].count,result[key].sum]),
             config: {
                 title : 'Avance de sprint' }
         };

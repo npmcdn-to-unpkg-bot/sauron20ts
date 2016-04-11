@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Service} from "./services/service";
+import {MainMenu} from "./menus";
 
 export class SauronApp extends React.Component {
 
@@ -40,19 +41,24 @@ export class SauronApp extends React.Component {
         return (
             <div>
 
-                <table className="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>Situación</th>
-                        <th>Tareas</th>
-                        <th>Esfuerzo</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {renderData()}
-                    </tbody>
-                </table>
+                <MainMenu selected="backlog" />
 
+                <div className="container main-content">
+
+                    <table className="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Situación</th>
+                            <th>Tareas</th>
+                            <th>Esfuerzo</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {renderData()}
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
         );
     }
