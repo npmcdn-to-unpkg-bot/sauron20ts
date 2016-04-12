@@ -1,69 +1,47 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import {Service} from "./services/service";
-import {MainMenu} from "./menus";
+import React from "react"
+import ReactDOM from "react-dom"
+import {Service} from "./services/service"
+import {MainMenu} from "./menus"
+import {SprintPage} from "./sprintpage"
+
+import { Router, Route, Link, hashHistory } from "react-router"
+
 
 export class SauronApp extends React.Component {
-
-    constructor() {
-        super();
-        this.state = { data:null };
-    }
-
-    componentDidMount() {
-        console.log("Siiii",Service);
-        Service.fetch("/sprint/rest/result/SC/36/situacion").then(result => {
-            console.log(result);
-            this.setState({data:result})
-        });
-    }
-
     render() {
-
-        if(this.state.data == null) return false;
-
-        var data = this.state.data.data;
-
-        var renderData = () => {
-            return Object.keys(data).map(key => {
-                return(
-                    <tr key={key}>
-                        <td>{key}</td>
-                        <td>{data[key].count}</td>
-                        <td>{data[key].sum}</td>
-                    </tr>
-                );
-            });
-        };
-
-
-
         return (
             <div>
+                <MainMenu />
 
-                <MainMenu selected="backlog" />
+                {this.props.children}
+            </div>
+        )
+    }
+}
 
-                <div className="container main-content">
+export class PageNotFound extends React.Component {
 
-                    <table className="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Situación</th>
-                            <th>Tareas</th>
-                            <th>Esfuerzo</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {renderData()}
-                        </tbody>
-                    </table>
-
-                </div>
+    render() {
+        return (
+            <div className="container main-content">
+                <h1>Error, la página no existe.</h1>
             </div>
         );
     }
-
 }
+
+export class PageTest extends React.Component {
+
+    render() {
+
+        console.log("Vale2: ",this.props);
+
+        return (
+            <h2>Página de Test</h2>
+        );
+    }
+}
+
 
 
 google.charts.load('current', {packages: ['corechart']});
@@ -71,8 +49,15 @@ google.charts.load('current', {packages: ['corechart']});
 google.charts.setOnLoadCallback(()=>{
 
     ReactDOM.render(
-    <SauronApp  />,
-        document.getElementById('app')
+        <Router history={hashHistory}>
+            <Route path="/" component={SauronApp}>
+                <Route path="sprint/:projectKey/:sprintId" component={SprintPage}>
+                    <Route path="informe-general" component={PageTest}/>
+                </Route>
+                <Route path="*" component={PageNotFound}/>
+            </Route>
+        </Router>
+        , document.getElementById('app')
     );
 
 });
