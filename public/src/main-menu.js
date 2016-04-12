@@ -5,6 +5,6 @@ export class MainMenu {
     @bindable router;
 
     bind() {
-        console.log(this.router.navigation);
+        //console.log(this.router.navigation);
     }
 }

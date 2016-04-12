@@ -1,0 +1,113 @@
+<template>
+
+    <require from="../core/converters"></require>
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <h3 style="margin: 0" class="text-primary">Información general</h3>
+            <hr class="hr-report"/>
+        </div>
+
+        <div class="col-md-12">
+            <table class="table-resumen table table-bordered">
+                <tbody>
+                <tr class="text-info">
+                    <th colSpan="2"><h4><i class="glyphicon glyphicon-bookmark"></i> Datos identificativos</h4></th>
+                </tr>
+                <tr>
+                    <th><span>Proyecto</span></th>
+                    <td>
+                        <span>${project.name}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Sprint ID</span></th>
+                    <td>
+                        <span>${sprint.id}</span>
+                    </td>
+                </tr>
+                <tr class="text-info">
+                    <th colSpan="2"><h4><i class="glyphicon glyphicon-calendar"></i> Duración</h4></th>
+                </tr>
+                <tr>
+                    <th><span>Duración</span></th>
+                    <td>
+                        <span>${sprint.jornadas} días.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Comienza</span></th>
+                    <td>
+                        <span>${sprint.start_date | dateFormat}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Finaliza</span></th>
+                    <td>
+                        <span>${sprint.end_date | dateFormat}</span>
+                    </td>
+                </tr>
+                <tr class="text-info">
+                    <th colSpan="2"><h4><i class="glyphicon glyphicon-comment"></i> Situación actual</h4></th>
+                </tr>
+                <tr>
+                    <th><span>Tiempo transcurrido</span></th>
+                    <td>
+                        <span>
+                            <span>${sprint.percJornadasTranscurridas}%</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Estado</span></th>
+                    <td>
+                        <span>
+                            <span if.bind="sprint.closed == 1" class="label label-success">Finalizado</span>
+                            <span if.bind="sprint.started == 1 && sprint.closed == 0" class="label label-primary">En curso</span>
+                            <span if.bind="sprint.started == 0 && sprint.closed == 0" class="label label-warning">Futuro</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>% Completado</span></th>
+                    <td>
+                        <span>${sprint.percTotalPuntosHistoriaCompletados}%</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th><span>Esfuerzo</span></th>
+                    <td>
+                        <span>${sprint.totalPuntosHistoria}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Esfuerzo completado</span></th>
+                    <td>
+                        <span>${sprint.totalPuntosHistoriaCompletados}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Tareas</span></th>
+                    <td>
+                        <span>${sprint.totalTareas}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><span>Tareas completadas</span></th>
+                    <td>
+                        <span>${sprint.totalTareasCompletadas}</span>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="col-md-12">
+            <div id="chartId"></div>
+        </div>
+    </div>
+
+</template>

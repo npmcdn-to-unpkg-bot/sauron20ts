@@ -25,12 +25,13 @@ System.config({
     "aurelia-templating-binding": "npm:aurelia-templating-binding@1.0.0-beta.1.1.1",
     "aurelia-templating-resources": "npm:aurelia-templating-resources@1.0.0-beta.1.1.1",
     "aurelia-templating-router": "npm:aurelia-templating-router@1.0.0-beta.1.1.1",
-    "babel": "npm:babel-core@5.8.35",
-    "babel-runtime": "npm:babel-runtime@5.8.35",
+    "babel": "npm:babel-core@5.8.38",
+    "babel-runtime": "npm:babel-runtime@5.8.38",
     "bootstrap": "github:twbs/bootstrap@3.3.6",
-    "core-js": "npm:core-js@2.1.0",
+    "core-js": "npm:core-js@1.2.6",
     "fetch": "github:github/fetch@0.10.1",
     "font-awesome": "npm:font-awesome@4.5.0",
+    "moment": "npm:moment@2.12.0",
     "text": "github:systemjs/plugin-text@0.0.4",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
@@ -179,8 +180,14 @@ System.config({
       "aurelia-task-queue": "npm:aurelia-task-queue@1.0.0-beta.1.1.1",
       "core-js": "npm:core-js@2.1.0"
     },
-    "npm:babel-runtime@5.8.35": {
+    "npm:babel-runtime@5.8.38": {
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:core-js@1.2.6": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
     "npm:core-js@2.1.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

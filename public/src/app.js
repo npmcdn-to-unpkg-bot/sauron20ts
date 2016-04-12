@@ -1,7 +1,9 @@
+import "/jspm_packages/npm/moment@2.12.0/locale/es";
+
 export class App {
 
     configureRouter(config, router) {
-        config.title = 'Aurelia';
+        config.title = 'Sauron';
         config.map([
 
             {

@@ -49,6 +49,21 @@ router.use('/result/:projectKey/:sprintId/situacion', async (req, res, next) => 
 
 });
 
+router.use('/rest/result/:projectKey/:sprintId/resumen', async (req, res, next) => {
+
+    try {
+        var reportResult:any = await sprintReport.resumenGeneral(req.params.projectKey, req.params.sprintId);
+
+        res.send(Object.assign(reportResult, { projectKey: req.params.projectKey
+            , sprintId: req.params.sprintId}));
+    }
+    catch(e) {
+        next(e);
+    }
+
+});
+
+
 router.use('/rest/result/:projectKey/:sprintId/situacion', async (req, res, next) => {
 
     try {

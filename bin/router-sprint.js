@@ -38,6 +38,16 @@ exports.router.use('/result/:projectKey/:sprintId/situacion', (req, res, next) =
         next(e);
     }
 }));
+exports.router.use('/rest/result/:projectKey/:sprintId/resumen', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        var reportResult = yield reports_1.sprintReport.resumenGeneral(req.params.projectKey, req.params.sprintId);
+        res.send(Object.assign(reportResult, { projectKey: req.params.projectKey,
+            sprintId: req.params.sprintId }));
+    }
+    catch (e) {
+        next(e);
+    }
+}));
 exports.router.use('/rest/result/:projectKey/:sprintId/situacion', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     try {
         var reportResult = yield reports_1.sprintReport.situacion(req.params.sprintId);
