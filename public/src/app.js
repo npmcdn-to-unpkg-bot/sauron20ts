@@ -1,63 +1,56 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import {Service} from "./services/service"
-import {MainMenu} from "./menus"
-import {SprintPage} from "./sprintpage"
+export class App {
 
-import { Router, Route, Link, hashHistory } from "react-router"
+    configureRouter(config, router) {
+        config.title = 'Aurelia';
+        config.map([
 
+            {
+                route: "/seguimiento/search",
+                name: 'seguimiento',
+                moduleId: './seguimiento',
+                nav: true,
+                title: 'Seguimiento',
+                href: "/seguimiento/search",
+                settings: {
+                    icon: "glyphicon-eye-open"
+                }
+            },
 
-export class SauronApp extends React.Component {
-    render() {
-        return (
-            <div>
-                <MainMenu />
+            {
+                route: ['','/sprint/:projectKey/:sprintId'],
+                name: 'sprint',
+                moduleId: './sprint/sprint',
+                nav: true,
+                title: 'Sprint',
+                settings: {
+                    icon: "glyphicon-calendar"
+                }
+            },
 
-                {this.props.children}
-            </div>
-        )
+            {
+                route: "/backlog/search",
+                name: 'backlog',
+                moduleId: './backlog',
+                nav: true,
+                title: 'Backlog',
+                settings: {
+                    icon: "glyphicon-list-alt"
+                }
+            },
+
+            {
+                route: "/historico/search",
+                name: 'historico',
+                moduleId: './historico',
+                nav: true,
+                title: 'Histórico',
+                settings: {
+                    icon: "glyphicon-folder-close"
+                }
+            }
+        ]);
+
+        this.router = router;
     }
+
 }
-
-export class PageNotFound extends React.Component {
-
-    render() {
-        return (
-            <div className="container main-content">
-                <h1>Error, la página no existe.</h1>
-            </div>
-        );
-    }
-}
-
-export class PageTest extends React.Component {
-
-    render() {
-
-        console.log("Vale2: ",this.props);
-
-        return (
-            <h2>Página de Test</h2>
-        );
-    }
-}
-
-
-
-google.charts.load('current', {packages: ['corechart']});
-
-google.charts.setOnLoadCallback(()=>{
-
-    ReactDOM.render(
-        <Router history={hashHistory}>
-            <Route path="/" component={SauronApp}>
-                <Route path="sprint/:projectKey/:sprintId" component={SprintPage}>
-                    <Route path="informe-general" component={PageTest}/>
-                </Route>
-                <Route path="*" component={PageNotFound}/>
-            </Route>
-        </Router>
-        , document.getElementById('app')
-    );
-
-});
