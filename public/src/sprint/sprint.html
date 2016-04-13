@@ -1,0 +1,38 @@
+<template>
+
+    <div class="container-fluid main-content">
+
+        <div class="row">
+
+            <div class="col-md-3 hidden-print">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="nav nav-pills nav-stacked bg-info">
+
+                            <li role="presentation" repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+                                <a href.bind="row.href">
+                                    ${row.title}
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-9">
+
+                <router-view></router-view>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</template>

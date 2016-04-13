@@ -1,0 +1,8 @@
+<template bindable="issue">
+    <div>
+        <a target="_blank" href="http://10.0.100.118:8085/jira/browse/${issue.issuekey}">${issue.issuekey} - ${issue.summary}</a>
+    </div>
+    <div if.bind="issue.epica_issuekey!=null" class="epica">
+        <a target="_blank" href="http://10.0.100.118:8085/jira/browse/${issue.epica_issuekey}">(*) ${issue.epica_summary}</a>
+    </div>
+</template>
