@@ -9,7 +9,7 @@
     "node": "registry:dt/node#4.0.0+20160330064709",
     "nunjucks": "registry:dt/nunjucks#0.0.0+20160220114617",
     "serve-static": "registry:dt/serve-static#0.0.0+20160317120654",
-    "underscore": "registry:dt/underscore#1.7.0+20160404072634",
+    "underscore": "registry:dt/underscore#1.7.0+20160412141459",
     "winston": "registry:dt/winston#0.0.0+20160324163241"
   },
   "dependencies": {}

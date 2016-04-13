@@ -1,0 +1,110 @@
+{% import "macro/issue-macros.twig" as issuemacro %}
+
+{% macro reportResumenDetalle(data) %}
+    <div class="row">
+
+        <div class="col-md-12">
+            <h3 style="margin: 0" class="text-primary">Tareas agrupadas por situación</h3>
+            <hr class="hr-report"/>
+        </div>
+
+        <div class="col-md-12">
+            <h4 class="hr-subreport"><span class="glyphicon glyphicon-bookmark"></span> Resumen</h4>
+        </div>
+
+        <div class="col-md-12">
+            <div id="chartId"></div>
+        </div>
+
+        <div class="col-md-12">
+            <table  class="table-resumen table table-bordered">
+                <thead>
+                <tr>
+                    {% for col in chartInfo.cols %}
+                    <th>{{col[1]}}</th>
+                    {% endfor %}
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for row in chartInfo.rows %}
+                <tr>
+                    {% for rowcol in row %}
+                    <td>{{rowcol}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="col-md-12">
+            <h4 class="hr-subreport">Detalle</h4>
+        </div>
+
+        {% for key,value in  data %}
+        <div class="col-md-12">
+            <table class="table table-bordered bg-primary">
+                <tbody>
+                <tr>
+                    <td style="color: white;">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <i class="glyphicon glyphicon-book"></i> {{key}}
+                            </div>
+                            <div class="col-md-2">
+                                <div class="pull-right">
+                                    <span>Total tareas: {{value.issues.length}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th width="70%">Tarea</th>
+                    <th width="10%">Tipo</th>
+                    <th width="10%">Estado</th>
+                    <th width="10%">Esfuerzo</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for row in value.issues %}
+                    <tr>
+                        <td>{{ issuemacro.issueSummary(row) }}</td>
+                        <td>{{ row.issuetype_name }}</td>
+                        <td>{{ issuemacro.issueStatus(row) }}</td>
+                        <td>{{ row.puntos_historia }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        {% endfor %}
+
+    </div>
+{% endmacro %}
+
+{% macro reportResumenDetalleChart(chartInfo) %}
+    <script>
+
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(function(){
+
+            var chartInfo = {{ chartInfo | dump }};
+
+            $("body").removeClass("hidden");
+
+            chart("chartId","PieChart",chartInfo.cols,chartInfo.rows,chartInfo.config);
+
+        });
+
+    </script>
+
+{% endmacro %}

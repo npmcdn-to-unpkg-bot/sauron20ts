@@ -3,31 +3,27 @@
         <ul class="nav nav-pills nav-stacked bg-info">
 
             <li role="presentation" class="{% if sprintMenuOption == 'infogeneral' %}active{% endif %}">
-                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/resumen/general">Información general</a>
+                <a href="/sprint/{{projectKey}}/{{sprintId}}/resumen">Información general</a>
             </li>
 
             <li role="presentation" class="{% if sprintMenuOption == 'situacion' %}active{% endif %}">
-                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/situacion">Resumen por situación</a>
+                <a href="/sprint/{{projectKey}}/{{sprintId}}/situacion">Resumen por situación</a>
             </li>
 
-            <li role="presentation" class="{% if sprintMenuOption == 'rtipo' %}active{% endif %}">
-                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/resumen/tipo">Resumen por tipo</a>
+            <li role="presentation" class="{% if sprintMenuOption == 'tipo' %}active{% endif %}">
+                <a href="/sprint/{{projectKey}}/{{sprintId}}/tipo">Resumen por tipo</a>
             </li>
 
-            <li role="presentation" class="{% if sprintMenuOption == 'rsit' %}active{% endif %}">
-                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/resumen/po">Resumen de tareas por product owner</a>
-            </li>
-
-            <li role="presentation" class="{% if sprintMenuOption == 'dpo' %}active{% endif %}">
-                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/detalle/po">Detalle por product owner</a>
+            <li role="presentation" class="{% if sprintMenuOption == 'po' %}active{% endif %}">
+                <a href="/sprint/{{projectKey}}/{{sprintId}}/po">Resumen de tareas por product owner</a>
             </li>
 
             <li role="presentation" class="{% if sprintMenuOption == 'depica' %}active{% endif %}">
-                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/detalle/proyectos">Detalle por proyecto en seguimiento</a>
+                <a href="/sprint/{{projectKey}}/{{sprintId}}/detalle/proyectos">Detalle por proyecto en seguimiento</a>
             </li>
 
             <li role="presentation" class="{% if sprintMenuOption == 'destado' %}active{% endif %}">
-                <a href="/sprint/result/{{projectKey}}/{{sprintId}}/detalle/estado">Detalle por estado</a>
+                <a href="/sprint/{{projectKey}}/{{sprintId}}/detalle/estado">Detalle por estado</a>
             </li>
 
 

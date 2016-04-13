@@ -18,7 +18,7 @@ exports.router.use('/search', (req, res, next) => __awaiter(this, void 0, void 0
         next(e);
     }
 }));
-exports.router.use('/result/:projectKey/:sprintId/resumen-general', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+exports.router.use('/:projectKey/:sprintId/resumen', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     try {
         var reportResult = yield reports_1.sprintReport.resumenGeneral(req.params.projectKey, req.params.sprintId);
         res.render("sprint/resumen", Object.assign(reportResult, { projectKey: req.params.projectKey,
@@ -28,11 +28,21 @@ exports.router.use('/result/:projectKey/:sprintId/resumen-general', (req, res, n
         next(e);
     }
 }));
-exports.router.use('/result/:projectKey/:sprintId/situacion', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+exports.router.use('/:projectKey/:sprintId/situacion', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     try {
         var reportResult = yield reports_1.sprintReport.situacion(req.params.sprintId);
-        res.render("sprint/situacion", Object.assign(reportResult, { projectKey: req.params.projectKey,
-            sprintId: req.params.sprintId }));
+        res.render("sprint/resumen-detalle", Object.assign(reportResult, { projectKey: req.params.projectKey,
+            sprintId: req.params.sprintId, menuOption: "situacion" }));
+    }
+    catch (e) {
+        next(e);
+    }
+}));
+exports.router.use('/:projectKey/:sprintId/tipo', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        var reportResult = yield reports_1.sprintReport.tipo(req.params.sprintId);
+        res.render("sprint/resumen-detalle", Object.assign(reportResult, { projectKey: req.params.projectKey,
+            sprintId: req.params.sprintId, menuOption: "tipo" }));
     }
     catch (e) {
         next(e);

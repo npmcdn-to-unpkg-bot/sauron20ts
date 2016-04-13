@@ -1,0 +1,21 @@
+{% extends "sprint/sprint-base.twig" %}
+
+{% import "macro/issue-macros.twig" as issuemacro %}
+{% import "macro/report-resumen-detalle.twig" as report %}
+
+{% set sprintMenuOption = "tipo" %}
+{% set hiddenBody = true %}
+
+{% block sprintbody %}
+
+    {{ report.reportResumenDetalle(data) }}
+
+
+{% endblock %}
+
+{% block script %}
+
+    {{ report.reportResumenDetalleChart(chartInfo) }}
+
+
+{% endblock %}

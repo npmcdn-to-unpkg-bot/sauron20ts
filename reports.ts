@@ -92,26 +92,51 @@ class SprintReport {
             "Finalizada":{count:0,sum:0,issues:[]}
         };
 
-        result = issues.reduce((r:any,issue:any) => {
-            let summary = r[issue.status_situacion];
-            checkNotNull("Estado situación",summary);
+        return this.resumenDetalle("status_situacion","Situacion","Situación",issues,result);
+
+    }
+
+    async tipo(sprintId:number) {
+
+        let issues = await repository.findSnapShotIssuesFromSprint(sprintId);
+
+        issues = await repository.completeIssueInfo(issues);
+
+        let result:any = {
+            "Historia":{count:0,sum:0,issues:[]},
+            "Incidencia":{count:0,sum:0,issues:[]}
+        };
+
+        return this.resumenDetalle("issuetype_name","Tipo","Tipo",issues,result);
+
+    }
+
+
+    resumenDetalle(groupByLabel:string,chartTableLabel:string, chartTitle:string,issues:Array<any>,preresult:any) {
+
+        let result:any = issues.reduce((r:any,issue:any) => {
+            let summary = r[issue[groupByLabel]];
+            if(!summary) {
+                r[issue[groupByLabel]] = {count:0,sum:0,issues:[]};
+                summary = r[issue[groupByLabel]];
+            }
 
             summary.count ++;
             summary.sum += issue.puntos_historia;
             summary.issues.push(issue);
 
             return r;
-        },result);
+        },preresult || {});
 
         const chart = {
             cols: [
-                ['string','Situación'],
+                ['string',chartTableLabel],
                 ['number','Tareas'],
                 ['number','Esfuerzo']
             ],
             rows: Object.keys(result).map(key => [key,result[key].count,result[key].sum]),
             config: {
-                title : 'Avance de sprint' }
+                title : chartTitle }
         };
 
         return {
@@ -120,6 +145,7 @@ class SprintReport {
         };
 
     }
+
 
 }
 

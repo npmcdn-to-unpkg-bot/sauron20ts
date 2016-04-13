@@ -1,3 +1,63 @@
+CREATE OR REPLACE VIEW status AS
+  SELECT id,pname as name from jiradb.issuestatus s;
+
+CREATE OR REPLACE VIEW type AS
+  SELECT id,pname as name from jiradb.issuetype;
+
+CREATE OR REPLACE VIEW priority AS
+  SELECT id,pname as name from jiradb.priority;
+
+
+CREATE OR REPLACE VIEW project AS
+  select p.id,p.pkey as projectkey,p.pname as name,p.lead as lead, p.lead as responsable
+    ,cat.SINK_NODE_ID as projectcategory_id
+  from jiradb.project p
+    left join jiradb.nodeassociation cat ON (cat.SOURCE_NODE_ID = p.id and
+                                             ASSOCIATION_TYPE='ProjectCategory');
+
+CREATE OR REPLACE VIEW component AS
+  select c.id as id,
+         c.cname as name,
+         c.description as description,
+         p.id as project_id,
+         p.projectkey as project_key,
+         p.name as project_name,
+         p.lead as project_lead,
+         u.id as lead_id,
+         u.user_name as lead_user_name,
+         u.display_name as lead_display_name,
+         u.email_address as lead_email_address
+  from jiradb.component c
+    LEFT JOIN user u ON c.lead = u.user_name
+    JOIN project p on p.id = c.project;
+
+CREATE OR REPLACE VIEW version AS
+  select v.id as id,
+         v.vname as name,
+         v.description as description,
+         v.startdate as startdate,
+         v.releasedate as releasedate,
+         v.released as released,
+         v.archived as archived,
+         v.url as url,
+         p.id as project_id,
+         p.projectkey as project_key,
+         p.name as project_name,
+         p.lead as project_lead
+  from jiradb.projectversion v
+    JOIN project p on p.id = v.project;
+
+
+CREATE OR REPLACE VIEW scuser AS
+  select id,user_name,display_name,email_address from jiradb.cwd_user u
+  where u.id in (select ms.child_id from jiradb.cwd_membership ms where ms.parent_id = 10214)
+        and u.id <> 10201;
+
+CREATE OR REPLACE VIEW user AS
+  select id,user_name,display_name,email_address from jiradb.cwd_user u;
+
+
+
 /* Vista de setalle de cada issue sin hacer join con sprint */
 CREATE OR REPLACE VIEW issues AS
   select i.id as id,
@@ -118,6 +178,13 @@ CREATE OR REPLACE VIEW issuedetail AS
     left join issuesprint iss on iss.issue_id = issue.id
     left join sprint sprint ON sprint.id = iss.sprint_id;
 
+CREATE OR REPLACE VIEW issuecomponent AS
+  select na.SOURCE_NODE_ID as issue_id, c.id  as component_id, c.*
+  from jiradb.nodeassociation na
+    INNER JOIN component c ON c.id = na.SINK_NODE_ID
+  where na.ASSOCIATION_TYPE='IssueComponent';
+
+
 CREATE OR REPLACE VIEW componentdetail AS
   select component.id as component_id, issuecomponent.issue_id, component.name, component.description, component.lead_id, user.display_name as lead_display_name, user.email_address as lead_email_address, user.user_name as lead_user_name
   from issuecomponent
@@ -136,89 +203,18 @@ CREATE OR REPLACE VIEW issuestatusdetail AS
     JOIN jiradb.changeitem ci ON ci.GROUPID = cg.id AND ci.FIELD = 'status';
 
 
-CREATE OR REPLACE VIEW issueversiondetail AS
-  select i.*,
-         v.id as version_id,
-         v.ARCHIVED as version_archived,
-         v.DESCRIPTION as version_description,
-         v.RELEASED as version_released,
-         v.RELEASEDATE as version_releasedate,
-         v.vname as version_name,
-         v.STARTDATE as version_startdate
-  from jiradb.nodeassociation na
-    INNER JOIN jiradb.projectversion v ON v.id = na.SINK_NODE_ID
-    INNER JOIN issuedetail_nosprint i ON i.id = na.SOURCE_NODE_ID
-  where na.ASSOCIATION_TYPE='IssueFixVersion';
-
-
-
 CREATE OR REPLACE VIEW rfcriesgos AS
   select cfv.id, cfv.issue as issue_id, cfo.customvalue as name
   from jiradb.customfieldvalue cfv
     left join jiradb.customfieldoption cfo ON cfo.customfield = cfv.customfield and cfo.id = cfv.stringvalue
   where cfv.customfield = 10318;
 
+/*
 CREATE OR REPLACE VIEW issuelink AS
   select id,source as issue_id_padre,DESTINATION issue_id_hijo
   from jiradb.issuelink
   where source in (select id from issue);
-
-
-CREATE OR REPLACE VIEW status AS
-  SELECT id,pname as name from jiradb.issuestatus s;
-
-CREATE OR REPLACE VIEW type AS
-  SELECT id,pname as name from jiradb.issuetype;
-
-CREATE OR REPLACE VIEW priority AS
-  SELECT id,pname as name from jiradb.priority;
-
-
-CREATE OR REPLACE VIEW project AS
-  select p.id,p.pkey as projectkey,p.pname as name,p.lead as lead, p.lead as responsable
-    ,cat.SINK_NODE_ID as projectcategory_id
-  from jiradb.project p
-    left join jiradb.nodeassociation cat ON (cat.SOURCE_NODE_ID = p.id and
-                                             ASSOCIATION_TYPE='ProjectCategory');
-
-CREATE OR REPLACE VIEW component AS
-  select c.id as id,
-         c.cname as name,
-         c.description as description,
-         p.id as project_id,
-         p.projectkey as project_key,
-         p.name as project_name,
-         p.lead as project_lead,
-         u.id as lead_id,
-         u.user_name as lead_user_name,
-         u.display_name as lead_display_name,
-         u.email_address as lead_email_address
-  from jiradb.component c
-    LEFT JOIN user u ON c.lead = u.user_name
-    JOIN project p on p.id = c.project;
-
-CREATE OR REPLACE VIEW issuecomponent AS
-  select na.SOURCE_NODE_ID as issue_id, c.id  as component_id, c.*
-  from jiradb.nodeassociation na
- INNER JOIN component c ON c.id = na.SINK_NODE_ID
-  where na.ASSOCIATION_TYPE='IssueComponent';
-
-CREATE OR REPLACE VIEW version AS
-  select v.id as id,
-         v.vname as name,
-         v.description as description,
-         v.startdate as startdate,
-         v.releasedate as releasedate,
-         v.released as released,
-         v.archived as archived,
-         v.url as url,
-          p.id as project_id,
-          p.projectkey as project_key,
-          p.name as project_name,
-          p.lead as project_lead
-  from jiradb.projectversion v
-  JOIN project p on p.id = v.project;
-
+*/
 
 CREATE OR REPLACE VIEW issueversion AS
   select na.SOURCE_NODE_ID as issue_id, v.id  as version_id, v.*
@@ -239,14 +235,6 @@ CREATE OR REPLACE VIEW worklog AS
   from jiradb.worklog w
     inner join jiradb.cwd_user au ON au.user_name = w.author
     left join jiradb.cwd_user aup ON aup.user_name = w.updateauthor;
-
-CREATE OR REPLACE VIEW scuser AS
-  select id,user_name,display_name,email_address from jiradb.cwd_user u
-  where u.id in (select ms.child_id from jiradb.cwd_membership ms where ms.parent_id = 10214)
-        and u.id <> 10201;
-
-CREATE OR REPLACE VIEW user AS
-  select id,user_name,display_name,email_address from jiradb.cwd_user u;
 
 /**
  BEGIN Vista que devuelve la lista de responsables de un componente

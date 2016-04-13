@@ -7,7 +7,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments)).next());
     });
 };
-const util_1 = require("./util");
 const repository_1 = require("./repository");
 const Promise = require("bluebird");
 class SprintReport {
@@ -76,29 +75,46 @@ class SprintReport {
                 "Probando": { count: 0, sum: 0, issues: [] },
                 "Finalizada": { count: 0, sum: 0, issues: [] }
             };
-            result = issues.reduce((r, issue) => {
-                let summary = r[issue.status_situacion];
-                util_1.checkNotNull("Estado situación", summary);
-                summary.count++;
-                summary.sum += issue.puntos_historia;
-                summary.issues.push(issue);
-                return r;
-            }, result);
-            const chart = {
-                cols: [
-                    ['string', 'Situación'],
-                    ['number', 'Tareas'],
-                    ['number', 'Esfuerzo']
-                ],
-                rows: Object.keys(result).map(key => [key, result[key].count, result[key].sum]),
-                config: {
-                    title: 'Avance de sprint' }
-            };
-            return {
-                data: result,
-                chartInfo: chart
-            };
+            return this.resumenDetalle("status_situacion", "Situacion", "Situación", issues, result);
         });
+    }
+    tipo(sprintId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let issues = yield repository_1.repository.findSnapShotIssuesFromSprint(sprintId);
+            issues = yield repository_1.repository.completeIssueInfo(issues);
+            let result = {
+                "Historia": { count: 0, sum: 0, issues: [] },
+                "Incidencia": { count: 0, sum: 0, issues: [] }
+            };
+            return this.resumenDetalle("issuetype_name", "Tipo", "Tipo", issues, result);
+        });
+    }
+    resumenDetalle(groupByLabel, chartTableLabel, chartTitle, issues, preresult) {
+        let result = issues.reduce((r, issue) => {
+            let summary = r[issue[groupByLabel]];
+            if (!summary) {
+                r[issue[groupByLabel]] = { count: 0, sum: 0, issues: [] };
+                summary = r[issue[groupByLabel]];
+            }
+            summary.count++;
+            summary.sum += issue.puntos_historia;
+            summary.issues.push(issue);
+            return r;
+        }, preresult || {});
+        const chart = {
+            cols: [
+                ['string', chartTableLabel],
+                ['number', 'Tareas'],
+                ['number', 'Esfuerzo']
+            ],
+            rows: Object.keys(result).map(key => [key, result[key].count, result[key].sum]),
+            config: {
+                title: chartTitle }
+        };
+        return {
+            data: result,
+            chartInfo: chart
+        };
     }
 }
 exports.sprintReport = new SprintReport();
