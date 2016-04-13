@@ -1,0 +1,1 @@
+module.exports = require("npm:react-router@2.1.1/lib/index");

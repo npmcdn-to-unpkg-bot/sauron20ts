@@ -57,8 +57,6 @@ app.use('/node_modules', express.static(path.join(__dirname,'../node_modules')))
 
 app.use(express.static('public'));
 
-logger.debug(path.join(__dirname,'public'));
-
 app.use("/sprint",sprintRouter);
 
 app.use("/test",(req, res, next) => {

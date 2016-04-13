@@ -28,7 +28,6 @@ templates.configure('views', {
 });
 exports.app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
 exports.app.use(express.static('public'));
-util_1.logger.debug(path.join(__dirname, 'public'));
 exports.app.use("/sprint", router_sprint_1.router);
 exports.app.use("/test", (req, res, next) => {
     res.render("test");
