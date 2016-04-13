@@ -1,8 +1,9 @@
 <template>
 
     <require from="../core/converters"></require>
+    <require from="../core/chart"></require>
 
-    <div class="row">
+    <div if.bind="sprint" class="row">
 
         <div class="col-md-12">
             <h3 style="margin: 0" class="text-primary">Información general</h3>
@@ -106,7 +107,7 @@
         </div>
 
         <div class="col-md-12">
-            <div id="chartId"></div>
+            <chart if.bind="chartInfo != null" type = "AreaChart" cols.bind="chartInfo.cols" rows.bind="chartInfo.rows" config.bind="chartInfo.config"></chart>
         </div>
     </div>
 

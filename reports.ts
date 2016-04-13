@@ -42,9 +42,33 @@ class SprintReport {
         sprint.percJornadasTranscurridas = Math.round(((sprint.jornadas - sprint.jornadas_pendientes) * 100) / sprint.jornadas);
         sprint.percTotalPuntosHistoriaCompletados = Math.round((sprint.totalPuntosHistoriaCompletados * 100) / sprint.totalPuntosHistoria);
 
+        var chartcols = [
+            ['string','Tipo'],
+            ['number','% Completado'],
+            ['number','% Transcurrido']
+        ];
+
+        const chart = {
+            cols: [
+                ['string','Tipo'],
+                ['number','% Completado'],
+                ['number','% Transcurrido']
+            ],
+            rows: [
+                ['',sprint.percTotalPuntosHistoriaCompletados, sprint.percJornadasTranscurridas],
+                ['',sprint.percTotalPuntosHistoriaCompletados, sprint.percJornadasTranscurridas]
+            ],
+            config:  {
+                title : 'Avance de sprint',
+                vAxis: { minValue:0},
+                hAxis: { minValue:0, maxValue:100 }
+            }
+        };
+
         return {
             project:project,
-            sprint: sprint
+            sprint: sprint,
+            chartInfo: chart
         };
     }
 

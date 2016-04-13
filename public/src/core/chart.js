@@ -1,4 +1,3 @@
-import _ from "underscore";
 import {bindable} from 'aurelia-framework';
 
 export class Chart {
@@ -14,14 +13,17 @@ export class Chart {
     chartId = Math.floor((Math.random() * 100000) + 1);
 
     bind() {
+
         if(this.type == null) throw new Error("type no puede ser null");
         if(this.cols == null) throw new Error("cols no puede ser null");
         if(this.rows == null) throw new Error("rows no puede ser null");
 
-        this.config = _.extend({
+        this.config = this.config || {};
+
+        this.config = Object.assign(this.config, {
             height: '400',
             legend: { position:'labeled' }
-        }, this.config);
+        });
 
 
         this.datatable = new google.visualization.DataTable();

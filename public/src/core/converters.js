@@ -3,6 +3,9 @@ import moment from 'moment';
 
 export class ObjectValuesValueConverter {
     toView(o) {
+
+        if(o == null) return [];
+
         return Object.keys(o).map(key => {
             return {
                 key:key,

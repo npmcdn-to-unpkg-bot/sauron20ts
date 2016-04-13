@@ -1,0 +1,93 @@
+<template>
+
+    <require from="../core/converters"></require>
+    <require from="../core/chart"></require>
+    <require from="../core/issue-summary.html"></require>
+    <require from="../core/issue-status"></require>
+
+    <div if.bind="data" class="row">
+
+        <div class="col-md-12">
+            <h3 style="margin: 0" class="text-primary">Desglose por situación de las tareas</h3>
+            <hr class="hr-report"/>
+        </div>
+
+        <div class="col-md-12">
+            <h4 class="hr-subreport"><span class="glyphicon glyphicon-bookmark"></span> Resumen</h4>
+        </div>
+
+        <div class="col-md-12">
+            <chart if.bind="chartInfo != null" type = "PieChart" cols.bind="chartInfo.cols" rows.bind="chartInfo.rows" config.bind="chartInfo.config"></chart>
+        </div>
+
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <table  class="table-resumen table table-bordered">
+                    <thead>
+                    <tr>
+                        <th repeat.for="col of chartInfo.cols">${col[1]}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr repeat.for="row of chartInfo.rows">
+                        <td repeat.for="rowcol of row">${rowcol}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="col-md-12">
+            <h4 class="hr-subreport"><span class="glyphicon glyphicon-bookmark"></span> Detalle</h4>
+        </div>
+
+        <div class="col-md-12">
+            <label>Filtro</label>
+            <input style="margin-bottom: 20px;" class="form-control" value.bind="filtro" keyup.trigger="onFiltrar($event)">
+        </div>
+
+
+        <div repeat.for="obj of data | objectValues" class="col-md-12">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td class="text-primary">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <i class="glyphicon glyphicon-book"></i> ${obj.key}
+                            </div>
+                            <div class="col-md-2">
+                                <div class="pull-right">
+                                    <span>Total tareas: ${obj.value.issues.length}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th width="70%">Tarea</th>
+                    <th width="10%">Tipo</th>
+                    <th width="10%">Estado</th>
+                    <th width="10%">Esfuerzo</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr repeat.for="issue of obj.value.issues">
+                    <td><issue-summary issue.bind="issue"></issue-summary></td>
+                    <td>${ issue.issuetype_name }</td>
+                    <td><issue-status issue.bind="issue"></issue-status></td>
+                    <td>${ issue.puntos_historia }</td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+</template>

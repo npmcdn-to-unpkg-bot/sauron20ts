@@ -13,6 +13,8 @@ export class Resumen {
             .then(result => {
                 this.project = result.project;
                 this.sprint = result.sprint;
+                this.chartInfo = result.chartInfo;
+                console.log(result);
             });
     }
 
