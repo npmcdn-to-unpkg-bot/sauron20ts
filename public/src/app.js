@@ -1,63 +1,30 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import {Service} from "./services/service"
-import {MainMenu} from "./menus"
-import {SprintPage} from "./sprintpage"
+import "/jspm_packages/npm/moment@2.12.0/locale/es";
 
-import { Router, Route, Link, hashHistory } from "react-router"
+export class App {
 
+    title = "Antonio";
 
-export class SauronApp extends React.Component {
-    render() {
-        return (
-            <div>
-                <MainMenu />
+    data=[];
 
-                {this.props.children}
-            </div>
-        )
+    constructor() {
+        setTimeout(() => {
+            for (let i = 0; i < 20000; i++) {
+                this.data.push({id: i, l: "Es una prueba2 "+i});
+            }
+            console.log("Ya!");
+        },2000);
+
+        setTimeout(() => {
+            this.title = "Antonio Hueso";
+        },2000);
+
     }
-}
 
-export class PageNotFound extends React.Component {
-
-    render() {
-        return (
-            <div className="container main-content">
-                <h1>Error, la página no existe.</h1>
-            </div>
-        );
+    delete(it) {
+        console.log(it);
+        this.data.splice(this.data.indexOf(it),1);
+        console.log(it);
     }
+
+
 }
-
-export class PageTest extends React.Component {
-
-    render() {
-
-        console.log("Vale2: ",this.props);
-
-        return (
-            <h2>Página de Test</h2>
-        );
-    }
-}
-
-
-
-google.charts.load('current', {packages: ['corechart']});
-
-google.charts.setOnLoadCallback(()=>{
-
-    ReactDOM.render(
-        <Router history={hashHistory}>
-            <Route path="/" component={SauronApp}>
-                <Route path="sprint/:projectKey/:sprintId" component={SprintPage}>
-                    <Route path="informe-general" component={PageTest}/>
-                </Route>
-                <Route path="*" component={PageNotFound}/>
-            </Route>
-        </Router>
-        , document.getElementById('app')
-    );
-
-});

@@ -1,20 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Test Sauron!</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Sauron</title>
+
+    <!-- Bootstrap -->
+    <link href="jspm_packages/github/twbs/bootstrap@3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <link href="stylesheets/style.css" rel="stylesheet"/>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 </head>
-<body>
 
+<body aurelia-app>
 <script src="jspm_packages/system.js"></script>
 <script src="config.js"></script>
 <script>
-    System.import('./app');
+
+    google.charts.load('current', {packages: ['corechart']});
+
+    google.charts.setOnLoadCallback(function() {
+        SystemJS.import('aurelia-bootstrapper');
+    });
+
 </script>
-
-
-<div id="app"></div>
-
 </body>
 </html>

@@ -1,0 +1,9 @@
+<template>
+
+    <h1>Hola aurelia ${title}</h1>
+
+    <ul>
+        <li repeat.for="it of data" click.trigger="delete(it)">${it.l}</li>
+    </ul>
+
+</template>
