@@ -29,6 +29,7 @@ templates.configure('views', {
 });
 exports.app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
 exports.app.use(express.static('public'));
+exports.app.use('/public-react', express.static(path.join(__dirname, '../public-react')));
 exports.app.use("/sprint", router_sprint_1.router);
 exports.app.use("/rest/sprint", router_rest_sprint_1.router);
 exports.app.listen(process.env.NODE_PORT || 3000, () => {

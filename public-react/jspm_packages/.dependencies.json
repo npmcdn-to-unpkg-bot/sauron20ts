@@ -314,5 +314,6 @@
   "npm:mobx-react@3.0.3": {
     "mobx": "npm:mobx@^2.0.0"
   },
-  "npm:mobx@2.1.2": {}
+  "npm:mobx@2.1.2": {},
+  "npm:jquery@2.2.3": {}
 }

@@ -5,7 +5,16 @@
         <div class="row">
 
             <div class="col-md-12">
-                <h1>Sprint Page: ${nombre}</h1>
+                <h1>Sprint Page</h1>
+                <button click.trigger="onClick()">Pincha</button>
+            </div>
+
+            <div class="col-md-12">
+                <ul>
+                    <li repeat.for="issue of data">
+                        ${issue.issuekey} - ${issue.summary}
+                    </li>
+                </ul>
             </div>
 
         </div>

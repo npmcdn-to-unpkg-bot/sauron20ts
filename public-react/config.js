@@ -1,5 +1,5 @@
 System.config({
-  baseURL: "/",
+  baseURL: "/public-react",
   defaultJSExtensions: true,
   transpiler: "babel",
   babelOptions: {
@@ -18,6 +18,7 @@ System.config({
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "core-js": "npm:core-js@1.2.6",
+    "jquery": "npm:jquery@2.2.3",
     "mobx": "npm:mobx@2.1.2",
     "mobx-react": "npm:mobx-react@3.0.3",
     "react": "npm:react@15.0.1",

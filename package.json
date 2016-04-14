@@ -42,6 +42,7 @@
       "baseURL": "public"
     },
     "dependencies": {
+      "jquery": "npm:jquery@^2.2.3",
       "mobx": "npm:mobx@^2.1.2",
       "mobx-react": "npm:mobx-react@^3.0.3",
       "react": "npm:react@^15.0.1",

@@ -1,30 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {observer} from "mobx-react";
-import {observable, transaction} from "mobx";
+import {Service} from "./src/services/service";
 
-@observer
 export class Main extends React.Component {
 
-    nombre = "Hola Hueso!";
-
-    @observable data = [];
-
-    constructor() {
+    constructor(){
         super();
-
-        setTimeout(() => {
-            transaction(() => {
-                for (let i = 0; i < 20000; i++) {
-                    this.data.push({id:i,l:"Es una prueba2 "});
-                }
-            });
-        },5000);
-
+        this.state = {
+            data:[]
+        }
     }
 
-    static propTypes = {
-        list: React.PropTypes.object.isRequired
+    onClick() {
+        Service.fetch("/rest/sprint/36/issues").then(issues => this.setState({data:issues}));
     }
 
     render() {
@@ -32,26 +20,29 @@ export class Main extends React.Component {
         console.log("Render Main!");
         return (
           <div>
-              <h1>Hello World React JSPM {this.nombre} {this.props.list.title}</h1>
-              <Child data={this.data} />
+              <h1>Hello World React JSPM</h1>
+              <button onClick={this.onClick.bind(this)}>Pincha</button>
+              <Issues data={this.state.data} />
           </div>
         );
     }
 }
 
-@observer
-export class Child extends React.Component {
+export class Issues extends React.Component {
 
     static propTypes = {
         data: React.PropTypes.object.isRequired
     }
 
     render() {
-        console.log("Render Child!");
+        console.log("Issues!");
+
+        const {data} = this.props;
+
         return (
             <ul>
-                {this.props.data.map(n => {
-                    return <li key={n.id}>{n.l}</li>
+                {data.map(issue => {
+                    return <li key={issue.issuekey}>{issue.issuekey} - {issue.summary}</li>
                 })}
             </ul>
         );
@@ -59,17 +50,8 @@ export class Child extends React.Component {
 }
 
 
-class TodoList {
-    @observable title = "mierda";
-}
-
-const list = new TodoList();
 
 ReactDOM.render(
-    <Main list={list}/>,
+    <Main />,
     document.getElementById("app")
 );
-
-setTimeout(() => {
-    list.title = "Es una prueba?";
-},3000);

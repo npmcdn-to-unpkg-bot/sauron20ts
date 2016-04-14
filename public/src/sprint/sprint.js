@@ -3,17 +3,21 @@ import {HttpClient} from 'aurelia-fetch-client';
 
 export class Sprint {
 
-    nombre = "Adrián Hueso Soto, ese chico de la moto";
+    data = null;
 
     activate(params, routeConfig, navigationInstruction) {
 
-        /*
         this.service = new HttpClient();
-        this.service.fetch(routeConfig.url)
+
+    }
+
+    onClick() {
+        this.service.fetch("/rest/sprint/36/issues")
             .then(response => response.json())
             .then(result => {
                 console.log(result);
-            }); */
+                this.data = result;
+            });
     }
 
 
