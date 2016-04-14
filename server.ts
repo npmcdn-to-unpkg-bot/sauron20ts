@@ -9,6 +9,7 @@ import * as Promise from "bluebird";
 import * as morgan from "morgan";
 import * as templates from "nunjucks";
 import {router as sprintRouter} from "./router-sprint";
+import {router as sprintRestRouter} from "./router-rest-sprint";
 const moment = require("moment");
 
 moment.locale("es");
@@ -59,9 +60,8 @@ app.use(express.static('public'));
 
 app.use("/sprint",sprintRouter);
 
-app.use("/test",(req, res, next) => {
-    res.render("test");
-});
+app.use("/rest/sprint",sprintRestRouter);
+
 
 /**********************************************************************************************************************
  * Servidor

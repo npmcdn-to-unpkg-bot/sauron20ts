@@ -66,7 +66,7 @@ class Repository {
                     }
                 });
             }
-            return issues;
+            return this.completeIssueInfo(issues);
         });
     }
     completeIssueInfo(issues) {

@@ -2,29 +2,69 @@ import "/jspm_packages/npm/moment@2.12.0/locale/es";
 
 export class App {
 
-    title = "Antonio";
+    configureRouter(config, router) {
+        config.title = 'Sauron';
+        config.map([
 
-    data=[];
+            {
+                route: "/seguimiento/search",
+                name: 'seguimiento',
+                moduleId: './seguimiento',
+                nav: true,
+                title: 'Seguimiento',
+                href: "/seguimiento/search",
+                settings: {
+                    icon: "glyphicon-eye-open"
+                }
+            },
 
-    constructor() {
-        setTimeout(() => {
-            for (let i = 0; i < 20000; i++) {
-                this.data.push({id: i, l: "Es una prueba2 "+i});
+            {
+                route: ['/sprint/:projectKey/:sprintId'],
+                name: 'sprint',
+                moduleId: './sprint/sprint',
+                title: 'Sprint',
+                settings: {
+                    icon: "glyphicon-calendar"
+                }
+            },
+
+            {
+                route: "/backlog/search",
+                name: 'backlog',
+                moduleId: './backlog',
+                nav: true,
+                title: 'Backlog',
+                settings: {
+                    icon: "glyphicon-list-alt"
+                }
+            },
+
+            {
+                route: "/historico/search",
+                name: 'historico',
+                moduleId: './historico',
+                nav: true,
+                title: 'Histórico',
+                settings: {
+                    icon: "glyphicon-folder-close"
+                }
+            },
+            {
+                route: '',
+                redirect: '/sprint/SC/36'
             }
-            console.log("Ya!");
-        },2000);
 
-        setTimeout(() => {
-            this.title = "Antonio Hueso";
-        },2000);
 
+        ]);
+
+        config.mapUnknownRoutes(instruction => {
+            console.log("COÑO!",instruction);
+            return "not-found";
+            //check instruction.fragment
+            //return moduleId
+        });
+
+        this.router = router;
     }
-
-    delete(it) {
-        console.log(it);
-        this.data.splice(this.data.indexOf(it),1);
-        console.log(it);
-    }
-
 
 }
