@@ -448,5 +448,8 @@
   },
   "npm:os-browserify@0.1.2": {
     "os": "github:jspm/nodelibs-os@^0.1.0"
+  },
+  "npm:bluebird@3.3.5": {
+    "process": "github:jspm/nodelibs-process@^0.1.0"
   }
 }
